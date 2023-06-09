@@ -39,8 +39,6 @@ public enum TipoToken {
   
     // Otros tokens
     IDENTIFICADOR,
-    ENTERO,
-    REAL,
     NUMERO,
     CADENA,
     COMA,

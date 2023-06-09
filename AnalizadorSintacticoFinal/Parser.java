@@ -22,6 +22,8 @@ public class Parser {
     private final Token orK = new Token(TipoToken.OR, "or");
     private final Token andK = new Token(TipoToken.AND, "and");
     private final Token superk = new Token(TipoToken.SUPER,"super");
+    private final Token numberK = new Token(TipoToken.NUMERO, "");
+    private final Token cadenaK = new Token(TipoToken.CADENA, "");
     // Identificadores
     private final Token id = new Token(TipoToken.IDENTIFICADOR, "");
 
@@ -48,7 +50,7 @@ public class Parser {
     private final Token not = new Token(TipoToken.NOT,"!");
        
     private final Token finCadena = new Token(TipoToken.EOF, "");
-
+   
     private int i = 0;
     private boolean hayErrores = false;
 
@@ -146,6 +148,7 @@ void var_init(){
         } else if (preanalisis.equals(whileK)) {
            while_stmt();
         } else if (preanalisis.equals(printK)){ 
+            match(printK);
             print_stmt();
         } else if (preanalisis.equals(returnK)) {
            return_stmt();
@@ -178,11 +181,11 @@ void var_init(){
     }
 }
     void for_stms1(){
+        if(preanalisis.equals(parentesisIzq))
+        match(parentesisIzq);
         var_decl();
         expr_stmt();
-        if(preanalisis.equals(puntoycoma)){
-            match(puntoycoma);
-        }
+        match(puntoycoma);
 
     }
 
@@ -197,7 +200,7 @@ void var_init(){
     }
     void for_stms3(){
         
-        if (preanalisis.equals(parentesisDer)) {
+        if (preanalisis.equals(puntoycoma)) {
                 expression();
         }
 
@@ -246,8 +249,9 @@ void var_init(){
         
 
     void return_exp_opc (){
+        if(preanalisis.equals(returnK)){
          expression();
-        
+        }
 
     }
 
@@ -274,15 +278,19 @@ void var_init(){
     }
 
     void block_decl(){
-        
-    
+     if(preanalisis.equals(corcheteIzq))   
+    {
         declaracion();
         block_decl();
        
     }
+}
     //EXPRESIONES
     void expression(){
-         assignment();
+if(preanalisis.equals(parentesisIzq) || preanalisis.equals(igual) || preanalisis.equals(puntoycoma) || preanalisis.equals(printK)){
+        assignment();
+
+}
 
     }
     void assignment(){
@@ -315,10 +323,11 @@ void var_init(){
     }
 
     void logic_and(){
-        
+        if(preanalisis.equals(orK)){
         equality();
         logic_and_2();
     }
+}
 
     void logic_and_2(){
         
@@ -330,10 +339,11 @@ void var_init(){
     }
 
     void equality(){
-        
+        if(preanalisis.equals(andK)){
         comparison();
         equality_2();
     }
+}
 
     void equality_2(){
         
@@ -349,10 +359,11 @@ void var_init(){
    }
 
    void comparison(){
-    
+    if(preanalisis.equals(igualIgual) || preanalisis.equals(diferente)){
         term();
         comparison_2();
    }
+}
 
    void comparison_2(){
     
@@ -376,10 +387,11 @@ void var_init(){
    }
 
    void term(){
-    
+    if(preanalisis.equals(menorOigual) || preanalisis.equals(menorQue)||preanalisis.equals(mayorOigual)||preanalisis.equals(mayorQue)){
     factor();
     term_2();
    }
+}
 
    void term_2(){
     
@@ -394,36 +406,36 @@ void var_init(){
     }
    }
     void factor(){
-        
+        if(preanalisis.equals(suma) || preanalisis.equals(menos)){
         unary();
         factor_2();
     }
+}
     void factor_2(){
-        
-        if(preanalisis.equals(division)){
-            match(division);
-            unary();
-            factor_2();
-        } else if(preanalisis.equals(multiplicacion)){
-            match(multiplicacion);
-            unary();
-            factor_2();
-        }
+    if(preanalisis.equals(division)){
+        match(division);
+        unary();
+        factor_2();
+    } else if(preanalisis.equals(multiplicacion)){
+        match(multiplicacion);
+        unary();
+        factor_2();
     }
+}
+
     void unary(){
-        
-        if(preanalisis.equals(not)){
+    if(preanalisis.equals(not)){
         match(not);
         unary();
-
-        }else if(preanalisis.equals(menos)){
-            match(menos);
-            unary();
-
-        }else{
+    } else if(preanalisis.equals(menos)){
+        match(menos);
+        unary();
+    } else{
+        
         call();
-        }
     }
+}
+
 
     void call(){
         
@@ -436,6 +448,7 @@ void var_init(){
             match(parentesisIzq);
             argumentsOpc();
             match(parentesisDer);
+            call_2();
         }else if(preanalisis.equals(punto)){
             match(punto);
             match(id);
@@ -458,6 +471,12 @@ match(punto);
             match(nullK);
         }else if(preanalisis.equals(thisK)){
             match(thisK);
+        }else if (preanalisis.equals(numberK)) {
+            match(numberK);
+        }
+        else if (preanalisis.equals(cadenaK)) {
+            match(cadenaK);
+            
         }
         else if(preanalisis.equals(id)){
             match(id);
@@ -495,10 +514,10 @@ match(punto);
     }
 
     void parameter_opc(){
-        
+        if(preanalisis.equals(parentesisIzq)){
        
                 parameter();
-       
+        }
 
     }
 
@@ -523,8 +542,10 @@ match(punto);
 
    
     void argumentsOpc(){
+        if(preanalisis.equals(parentesisIzq)){
         
         arguments();
+        }
     }
 
     void arguments(){

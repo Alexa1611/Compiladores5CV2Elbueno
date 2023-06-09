@@ -48,6 +48,9 @@ public class Principal {
         Scanner scanner = new Scanner(source);
 
         List<Token> tokens = scanner.scanTokens();
+        for(Token t : tokens){
+            System.out.println(t);
+        }
 
         Parser parser = new Parser(tokens);
         parser.parse(); 

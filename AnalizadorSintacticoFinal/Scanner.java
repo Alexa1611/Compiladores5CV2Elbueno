@@ -41,7 +41,7 @@ public class Scanner {
             switch (estado){
                 case 0:
                     if(caracter == '='){
-                        tokens.add(new Token(TipoToken.ASIGNACION, "=", i + 1));
+                        tokens.add(new Token(TipoToken.IGUAL, "=", i + 1));
                     }
                     else if(caracter == '+'){
                         tokens.add(new Token(TipoToken.SUMA, "+", i + 1));
@@ -53,7 +53,7 @@ public class Scanner {
                         tokens.add(new Token(TipoToken.MULTIPLICACION, "*", i + 1));
                     }
                     else if(caracter == '/'){
-                        tokens.add(new Token(TipoToken.DIVISION, "/", i + 1));
+                        estado=5;
                     }
                     else if(caracter == '('){
                         tokens.add(new Token(TipoToken.PARENTESIS_IZQ, "(", i + 1));
@@ -74,6 +74,11 @@ public class Scanner {
                     }
                     else if(Character.isDigit(caracter)){
                         estado = 2;
+                        lexema = lexema + caracter;
+                        inicioLexema = i;
+                    }
+                    else if(caracter == '\"'){
+                        estado = 3;
                         lexema = lexema + caracter;
                         inicioLexema = i;
                     }
@@ -103,12 +108,8 @@ public class Scanner {
                     if(Character.isDigit(caracter)){
                         lexema = lexema + caracter;
                     }
-                    else if(caracter == '.'){
-                        estado = 3;
-                        lexema = lexema + caracter;
-                    }
                     else{
-                        tokens.add(new Token(TipoToken.ENTERO, lexema, inicioLexema + 1));
+                        tokens.add(new Token(TipoToken.NUMERO, lexema, inicioLexema + 1));
                         estado = 0;
                         i--;
                         lexema = "";
@@ -117,17 +118,46 @@ public class Scanner {
                     break;
 
                 case 3:
-                    if(Character.isDigit(caracter)){
+                    if (caracter != '\"') {
                         lexema = lexema + caracter;
-                    }
-                    else{
-                        tokens.add(new Token(TipoToken.REAL, lexema, inicioLexema + 1));
+                    } else {
+                        tokens.add(new Token(TipoToken.CADENA, lexema, inicioLexema + 1));
                         estado = 0;
-                        i--;
                         lexema = "";
                         inicioLexema = 0;
                     }
                     break;
+
+                case 5:
+                    if (caracter == '/') {
+                        // Comentario de una línea, se omite el resto de la línea actual
+                        i = source.indexOf('\n', i); // Salta hasta el final de la línea
+                        estado = 0;
+                    } else if (caracter == '*') {
+                        // Comentario de varias líneas, se omite hasta encontrar el cierre del comentario
+                        estado = 6;
+                    } else {
+                        tokens.add(new Token(TipoToken.DIVISION, "/", i + 1));
+                        estado = 0;
+                        lexema = "";
+                        inicioLexema = 0;
+                        i--;
+                    }
+                    break;
+
+                case 6:
+                    if (caracter == '*') {
+                        if (source.charAt(i + 1) == '/') {
+                            // Cierre del comentario de varias líneas
+                            i++; // Avanza el índice para evitar agregar el carácter '/'
+                            estado = 0;
+                        }
+                    } else if (caracter == '\0') {
+                        // Si se alcanza el final del código sin encontrar el cierre del comentario, se genera un error
+                        throw new IllegalArgumentException("Error de sintaxis: comentario de varias líneas no cerrado");
+                    }
+                    break;
+
             }
         }
         tokens.add(new Token(TipoToken.EOF, "", source.length()));
