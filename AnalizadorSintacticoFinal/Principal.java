@@ -45,12 +45,13 @@ public class Principal {
     }
 
     private static void ejecutar(String source){
+
         Scanner scanner = new Scanner(source);
 
         List<Token> tokens = scanner.scanTokens();
-        for(Token t : tokens){
+        /*for(Token t : tokens){
             System.out.println(t);
-        }
+        }*/
 
         Parser parser = new Parser(tokens);
         parser.parse(); 

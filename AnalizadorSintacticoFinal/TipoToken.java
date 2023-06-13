@@ -36,6 +36,8 @@ public enum TipoToken {
     MENOR_QUE,
     MENOR_IGUAL,
     NOT,
+    LLAVE_IZQ,
+    LLAVE_DER,
   
     // Otros tokens
     IDENTIFICADOR,
