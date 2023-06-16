@@ -1,0 +1,5 @@
+var edad = 18;
+if (edad >= 18) {
+    print edad;
+    print 18;
+}
