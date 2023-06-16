@@ -84,7 +84,13 @@ void declaracion() {
     } else if (preanalisis.equals(varK)) {
         var_decl();
         declaracion();
-    } else if (preanalisis.equals(ifK) || preanalisis.equals(whileK) || preanalisis.equals(printK) || preanalisis.equals(returnK) || preanalisis.equals(forK)) {
+
+    } else if (preanalisis.equals(ifK) || preanalisis.equals(whileK) || preanalisis.equals(printK) 
+    || preanalisis.equals(returnK) || preanalisis.equals(forK) || preanalisis.equals(llaveIzq)|| 
+    preanalisis.equals(diferente) || preanalisis.equals(menos) || preanalisis.equals(trueK) || 
+    preanalisis.equals(falseK) || 
+    preanalisis.equals(nullK) || preanalisis.equals(thisK) || preanalisis.equals(numberK) || preanalisis.equals(cadenaK) || 
+    preanalisis.equals(id) || preanalisis.equals(parentesisIzq) || preanalisis.equals(superk)){
         state_decl();
         declaracion();
     }
@@ -143,7 +149,9 @@ void state_decl() {
         return_stmt();
     } else if (preanalisis.equals(llaveIzq)) {
         block();
-    } else {
+    } else if (preanalisis.equals(diferente) || preanalisis.equals(menos) || preanalisis.equals(trueK) || preanalisis.equals(falseK) || 
+    preanalisis.equals(nullK) || preanalisis.equals(thisK) || preanalisis.equals(numberK) || preanalisis.equals(cadenaK) || 
+    preanalisis.equals(id) || preanalisis.equals(parentesisIzq) || preanalisis.equals(superk)) {
         expr_stmt();
     }
 }
