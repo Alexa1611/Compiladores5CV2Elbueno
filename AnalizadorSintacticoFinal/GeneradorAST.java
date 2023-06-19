@@ -47,7 +47,7 @@ public class GeneradorAST {
                 }
                 pila.push(n);
             }
-            else if(t.tipo == TipoToken.SEMICOLON){
+            else if(t.tipo == TipoToken.PUNTO_Y_COMA){
 
                 if (pila.isEmpty()){
                     /*
