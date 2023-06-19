@@ -9,6 +9,7 @@ public class Arbol {
     public Arbol(Nodo raiz){
         this.raiz = raiz;
     }
+    //solo funcione if, while, for, print,var que entran a la tabla de simbolos 
 
     public void recorrer(){
         for(Nodo n : raiz.getHijos()){
