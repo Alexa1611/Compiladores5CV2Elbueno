@@ -16,7 +16,7 @@ public enum TipoToken {
     OR,
     AND,
     EXTENDS,
-  
+
     // Operadores y signos de puntuación
     ASIGNACION,
     SUMA,
@@ -38,7 +38,7 @@ public enum TipoToken {
     NOT,
     LLAVE_IZQ,
     LLAVE_DER,
-  
+
     // Otros tokens
     IDENTIFICADOR,
     NUMERO,
@@ -49,4 +49,3 @@ public enum TipoToken {
     SUPER,
     EOF,
 }
-  

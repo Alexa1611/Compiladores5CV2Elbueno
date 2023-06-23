@@ -39,8 +39,10 @@ public class Arbol {
 
                     break;
                 case WHILE:
+                
                     break;
                 case FOR:
+
                     break;
                 case PRINT:
 
