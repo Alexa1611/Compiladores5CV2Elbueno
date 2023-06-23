@@ -86,5 +86,4 @@ public class Principal {
                 "[linea " + linea + "] Error " + donde + ": " + mensaje);
         existenErrores = true;
     }
-
 }
