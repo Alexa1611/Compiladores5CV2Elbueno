@@ -7,16 +7,16 @@ public class SolverAritmetico {
         this.nodo = nodo;
     }
 
-    public Object resolver(){
+    public Object resolver() {
         return resolver(nodo);
     }
-    private Object resolver(Nodo n){
+
+    private Object resolver(Nodo n) {
         // No tiene hijos, es un operando
-        if(n.getHijos() == null){
-            if(n.getValue().tipo == TipoToken.NUMERO || n.getValue().tipo == TipoToken.CADENA){
+        if (n.getHijos() == null) {
+            if (n.getValue().tipo == TipoToken.NUMERO || n.getValue().tipo == TipoToken.CADENA) {
                 return n.getValue().literal;
-            }
-            else if(n.getValue().tipo == TipoToken.IDENTIFICADOR){
+            } else if (n.getValue().tipo == TipoToken.IDENTIFICADOR) {
                 // Ver la tabla de símbolos
             }
         }
@@ -28,27 +28,25 @@ public class SolverAritmetico {
         Object resultadoIzquierdo = resolver(izq);
         Object resultadoDerecho = resolver(der);
 
-        if(resultadoIzquierdo instanceof Double && resultadoDerecho instanceof Double){
-            switch (n.getValue().tipo){
+        if (resultadoIzquierdo instanceof Double && resultadoDerecho instanceof Double) {
+            switch (n.getValue().tipo) {
                 case SUMA:
-                    return ((Double)resultadoIzquierdo + (Double) resultadoDerecho);
+                    return ((Double) resultadoIzquierdo + (Double) resultadoDerecho);
                 case RESTA:
-                    return ((Double)resultadoIzquierdo - (Double) resultadoDerecho);
+                    return ((Double) resultadoIzquierdo - (Double) resultadoDerecho);
                 case MULTIPLICACION:
-                    return ((Double)resultadoIzquierdo * (Double) resultadoDerecho);
+                    return ((Double) resultadoIzquierdo * (Double) resultadoDerecho);
                 case DIVISION:
-                    return ((Double)resultadoIzquierdo / (Double) resultadoDerecho);
+                    return ((Double) resultadoIzquierdo / (Double) resultadoDerecho);
             }
-        }
-        else if(resultadoIzquierdo instanceof String && resultadoDerecho instanceof String){
-            if (n.getValue().tipo == TipoToken.SUMA){
+        } else if (resultadoIzquierdo instanceof String && resultadoDerecho instanceof String) {
+            if (n.getValue().tipo == TipoToken.SUMA) {
                 // Ejecutar la concatenación
             }
-        }
-        else{
+        } else {
             // Error por diferencia de tipos
         }
 
         return null;
     }
-}
+} 
