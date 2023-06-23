@@ -6,6 +6,14 @@ public class Token {
     final int posicion;
     final Object literal;
 
+    public Token(TipoToken tipo, String lexema) {
+        this.tipo = tipo;
+        this.lexema = lexema;
+        this.posicion = 0;
+        this.literal = null;
+
+    }
+
     public Token(TipoToken tipo, String lexema, int posicion) {
         this.tipo = tipo;
         this.lexema = lexema;
