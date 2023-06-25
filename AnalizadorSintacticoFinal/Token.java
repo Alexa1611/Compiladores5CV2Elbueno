@@ -130,5 +130,7 @@ public class Token {
         }
         return 0;
     }
+    
+        public boolean esIdentificador(){return tipo == TipoToken.IDENTIFICADOR;} 
 
 }
