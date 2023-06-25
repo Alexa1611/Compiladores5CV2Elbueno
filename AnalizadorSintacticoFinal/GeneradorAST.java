@@ -6,10 +6,12 @@ public class GeneradorAST {
 
     private final List<Token> postfija;
     private final Stack<Nodo> pila;
+    private final TablaDeSimbolos tablaDeSimbolos;
 
-    public GeneradorAST(List<Token> postfija){
+    public GeneradorAST(List<Token> postfija, TablaDeSimbolos tablaDeSimbolos) {
         this.postfija = postfija;
         this.pila = new Stack<>();
+        this.tablaDeSimbolos = tablaDeSimbolos;
     }
 
     public Arbol generarAST() {
@@ -19,12 +21,12 @@ public class GeneradorAST {
 
         Nodo padre = raiz;
 
-        for(Token t : postfija){
-            if(t.tipo == TipoToken.EOF){
+        for (Token t : postfija) {
+            if (t.tipo == TipoToken.EOF) {
                 break;
             }
 
-            if(t.esPalabraReservada()){
+            if (t.esPalabraReservada()) {
                 Nodo n = new Nodo(t);
 
                 padre = pilaPadres.peek();
@@ -33,59 +35,60 @@ public class GeneradorAST {
                 pilaPadres.push(n);
                 padre = n;
 
-            }
-            else if(t.esOperando()){
+            } else if (t.esOperando()) {
                 Nodo n = new Nodo(t);
-                pila.push(n);
-            }
-            else if(t.esOperador()){
-                int aridad = t.aridad();
-                Nodo n = new Nodo(t);
-                for(int i=1; i<=aridad; i++){
-                    Nodo nodoAux = pila.pop();
-                    n.insertarHijo(nodoAux);
+                if (t.esIdentificador()) {
+                    String lexema = t.getLexema();
+                    Object valor = tablaDeSimbolos.getValor(lexema);
+                    n.setLiteral(valor);
                 }
                 pila.push(n);
             }
-            else if(t.tipo == TipoToken.PUNTO_Y_COMA){
 
-                if (pila.isEmpty()){
+            if (t.esOperador()) {
+                int aridad = t.aridad();
+                Nodo n = new Nodo(t);
+                for (int i = 1; i <= aridad; i++) {
+                    Nodo nodoAux = pila.pop();
+                }
+
+                pila.push(n);
+            } else if (t.tipo == TipoToken.PUNTO_Y_COMA) {
+
+                if (pila.isEmpty()) {
                     /*
-                    Si la pila esta vacía es porque t es un punto y coma
-                    que cierra una estructura de control
+                     * Si la pila esta vacía es porque t es un punto y coma
+                     * que cierra una estructura de control
                      */
                     pilaPadres.pop();
                     padre = pilaPadres.peek();
-                }
-                else{
+                } else {
                     Nodo n = pila.pop();
 
-                    if(padre.getValue().tipo == TipoToken.VAR){
+                    if (padre.getValue().tipo == TipoToken.VAR) {
                         /*
-                        En el caso del VAR, es necesario eliminar el igual que
-                        pudiera aparecer en la raíz del nodo n.
+                         * En el caso del VAR, es necesario eliminar el igual que
+                         * pudiera aparecer en la raíz del nodo n.
                          */
-                        if(n.getValue().tipo == TipoToken.IGUAL){
+                        if (n.getValue().tipo == TipoToken.IGUAL) {
                             padre.insertarHijos(n.getHijos());
-                        }
-                        else{
+                        } else {
                             padre.insertarSiguienteHijo(n);
                         }
                         pilaPadres.pop();
                         padre = pilaPadres.peek();
-                    }
-                    else if(padre.getValue().tipo == TipoToken.PRINT){
+                    } else if (padre.getValue().tipo == TipoToken.PRINT) {
                         padre.insertarSiguienteHijo(n);
                         pilaPadres.pop();
-                        padre = pilaPadres.peek();
                     }
+
                     else {
                         padre.insertarSiguienteHijo(n);
                     }
                 }
             }
         }
-                                                                 
+
         // Suponiendo que en la pila sólamente queda un nodo
         // Nodo nodoAux = pila.pop();
         Arbol programa = new Arbol(raiz);
