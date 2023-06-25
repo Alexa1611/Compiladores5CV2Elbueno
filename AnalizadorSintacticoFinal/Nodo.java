@@ -35,7 +35,7 @@ public class Nodo {
             hijos = new ArrayList<>();
         }
 
-        for(Nodo n : nodosHijos){
+        for(Nodo n : nodosHijos){          
             hijos.add(n);
         }
     }
@@ -45,6 +45,6 @@ public class Nodo {
     }
 
     public List<Nodo> getHijos(){
-        return hijos;
+        return hijos;                         
     }
 }
