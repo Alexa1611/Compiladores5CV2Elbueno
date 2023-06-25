@@ -10,7 +10,7 @@ public class GeneradorPostfija {
     private final List<Token> postfija;
     private final TablaDeSimbolos tablaDeSimbolos; 
 
-    public GeneradorPostfija(List<Token> infija, TablaDeSimbolos tablaDeSimbolos) {
+    public GeneradorPostfija(List<Token> infija,  TablaDeSimbolos tablaDeSimbolos) {
         this.infija = infija;
         this.pila = new Stack<>();
         this.postfija = new ArrayList<>();
@@ -91,11 +91,12 @@ public class GeneradorPostfija {
                     }
                 }}
                 else if (t.esIdentificador()){
-                    Object valor = tablaDeSimbolos.obtener(t.literal);
+                    Object valor = tablaDeSimbolos.obtener(t.literal.toString());
                     if (valor != null){
                         t.literal = valor.toString();
                         postfija.add(t);
-                    } else { throw new RuntimeException ("Error: Variable no encontrada");
+                    } else { 
+                        throw new RuntimeException ("Error: Variable no encontrada");
                 }
             }
             }

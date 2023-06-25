@@ -20,7 +20,7 @@ public class SolverAritmetico {
                 return n.getValue().literal;
             } else if (n.getValue().tipo == TipoToken.IDENTIFICADOR) {
                 // Ver la tabla de símbolos
-            String nombreVariable = n.getValue().literal;
+            String nombreVariable =(String) n.getValue().literal;
             Object valor = tablaDeSimbolos.obtener(nombreVariable);
             if (valor == null) {
                 throw new RuntimeException ("Error: Variable no existe");

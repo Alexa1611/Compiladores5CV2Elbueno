@@ -4,7 +4,8 @@ public class Token {
     final TipoToken tipo;
     final String lexema;
     final int posicion;
-    final String literal;
+    Object literal;
+    
 
     public Token(TipoToken tipo, String lexema) {
         this.tipo = tipo;
@@ -22,7 +23,7 @@ public class Token {
 
     }
 
-    public Token(TipoToken tipo, String lexema, String literal) {
+    public Token(TipoToken tipo, String lexema, Object literal) {
         this.tipo = tipo;
         this.lexema = lexema;
         this.posicion = 0;
@@ -131,6 +132,9 @@ public class Token {
         return 0;
     }
     
-        public boolean esIdentificador(){return tipo == TipoToken.IDENTIFICADOR;} 
+        public boolean esIdentificador()
+        {
+            return tipo == TipoToken.IDENTIFICADOR;
+        } 
 
 }

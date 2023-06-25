@@ -1,4 +1,3 @@
-
 import java.util.List;
 import java.util.Stack;
 
@@ -38,9 +37,10 @@ public class GeneradorAST {
             } else if (t.esOperando()) {
                 Nodo n = new Nodo(t);
                 if (t.esIdentificador()) {
-                    String lexema = t.getLexema();
-                    Object valor = tablaDeSimbolos.getValor(lexema);
-                    n.setLiteral(valor);
+                    String lexema = t.lexema;
+                    Object valor = tablaDeSimbolos.obtener(lexema);
+                    String valorString = valor.toString();
+                    n.setLiteral(valorString);
                 }
                 pila.push(n);
             }

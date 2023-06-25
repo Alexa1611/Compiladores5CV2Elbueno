@@ -1,13 +1,15 @@
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Nodo {
-    private final Token value;
+    private Token value;
+    private String literal;
     private List<Nodo> hijos;
 
     public Nodo(Token value){
         this.value = value;
+        this.literal= null;
+        this.hijos = new ArrayList<>();
     }
 
     public void insertarHijo(Nodo n){
@@ -42,6 +44,13 @@ public class Nodo {
 
     public Token getValue(){
         return value;
+    }
+    public Object getLiteral(){
+        return literal;
+    }
+
+    public void setLiteral(String literal){
+        this.literal = literal;
     }
 
     public List<Nodo> getHijos(){
