@@ -3,9 +3,11 @@ import java.util.List;
 
 public class Arbol {
     private final Nodo raiz;
+    private final TablaDeSimbolos tablaDeSimbolos;
 
-    public Arbol(Nodo raiz) {
+    public Arbol(Nodo raiz, TablaDeSimbolos tablaDeSimbolos) {
         this.raiz = raiz;
+        this.tablaDeSimbolos = tablaDeSimbolos;
     }
 
     public void recorrer() {
@@ -25,7 +27,7 @@ public class Arbol {
             case RESTA:
             case MULTIPLICACION:
             case DIVISION:
-                SolverAritmetico solver = new SolverAritmetico(nodo);
+                SolverAritmetico solver = new SolverAritmetico(nodo, tablaDeSimbolos);
                 Object res = solver.resolver();
                 System.out.println(res);
                 break;
@@ -43,18 +45,18 @@ public class Arbol {
                 break;
             case PRINT:
                 Nodo expresion = nodo.getHijos().get(0);
-                SolverAritmetico print = new SolverAritmetico(expresion);
+                SolverAritmetico print = new SolverAritmetico(expresion, tablaDeSimbolos);
                 Object printR = print.resolver();
                 System.out.println(printR);
                 break;
             case WHILE:
                 Nodo condWhile = nodo.getHijos().get(0);
                 Nodo cuerpWhile = nodo.getHijos().get(1);
-                SolverAritmetico condsSolver = new SolverAritmetico(condWhile);
+                SolverAritmetico condsSolver = new SolverAritmetico(condWhile, tablaDeSimbolos);
                 boolean whileR = (boolean) condsSolver.resolver();
                 while (whileR) {
                     recorrerNodo(cuerpWhile);
-                    condsSolver = new SolverAritmetico(condWhile);
+                    condsSolver = new SolverAritmetico(condWhile, tablaDeSimbolos);
                     whileR = (boolean) condsSolver.resolver();
                 }
                 break;
@@ -64,12 +66,12 @@ public class Arbol {
                 Nodo actFor = nodo.getHijos().get(2);
                 Nodo cuerpFor = nodo.getHijos().get(3);
                 recorrerNodo(IniFor);
-                SolverAritmetico condsForS = new SolverAritmetico(condsFor);
+                SolverAritmetico condsForS = new SolverAritmetico(condsFor, tablaDeSimbolos);
                 boolean forR = (boolean) condsForS.resolver();
                 while (forR) {
                     recorrerNodo(cuerpFor);
                     recorrerNodo(actFor);
-                    condsForS = new SolverAritmetico(condsFor);
+                    condsForS = new SolverAritmetico(condsFor, tablaDeSimbolos);
                     forR = (boolean) condsForS.resolver();
 
                 }
@@ -77,7 +79,7 @@ public class Arbol {
             case IF:
                 Nodo condsIf = nodo.getHijos().get(0);
                 Nodo cuerpIf = nodo.getHijos().get(1);
-                SolverAritmetico condsIfS = new SolverAritmetico(condsIf);
+                SolverAritmetico condsIfS = new SolverAritmetico(condsIf, tablaDeSimbolos);
                 boolean ifR = (boolean) condsIfS.resolver();
                 if (ifR) {
                     recorrerNodo(cuerpIf);
