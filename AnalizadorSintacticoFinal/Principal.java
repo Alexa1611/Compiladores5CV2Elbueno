@@ -59,19 +59,19 @@ public class Principal {
 
         Parser parser = new Parser(tokens);
         parser.parse();
-
+            TablaDeSimbolos tablaDeSimbolos = new TablaDeSimbolos();
         
-         GeneradorPostfija gpf = new GeneradorPostfija(tokens);
+         GeneradorPostfija gpf = new GeneradorPostfija(tokens, tablaDeSimbolos);
          List<Token> postfija = gpf.convertir();
          
 
         
-         /*for(Token token : postfija){
+         for(Token token : postfija){
          System.out.println(token);
-         }*/
+         }
         
         
-         GeneradorAST gast = new GeneradorAST(postfija);
+         GeneradorAST gast = new GeneradorAST(postfija,tablaDeSimbolos);
          Arbol programa = gast.generarAST();
          programa.recorrer();
          

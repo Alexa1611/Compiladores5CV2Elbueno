@@ -1,13 +1,12 @@
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Arbol {
-    private final Nodo raiz;
+    private Nodo raiz;
     private final TablaDeSimbolos tablaDeSimbolos;
 
-    public Arbol(Nodo raiz, TablaDeSimbolos tablaDeSimbolos) {
+    public Arbol(Nodo raiz) {
         this.raiz = raiz;
-        this.tablaDeSimbolos = tablaDeSimbolos;
+        this.tablaDeSimbolos = null;
     }
 
     public void recorrer() {
@@ -33,15 +32,16 @@ public class Arbol {
                 break;
 
             case VAR:
-                String nombreVariable = nodo.getHijos().get(0).getValue().literal;
+                String nombreVariable = nodo.getHijos().get(0).getValue().literal.toString();
                 Token valorToken = nodo.getHijos().get(1).getValue();
                 Object valor = null;
                 if (valorToken.tipo == TipoToken.NUMERO) {
-                    valor = Double.parseDouble((valorToken.literal));
+                    valor = Double.parseDouble(String.valueOf(valorToken.literal.toString()));
 
                 } else if (valorToken.tipo == TipoToken.CADENA) {
                     valor = valorToken.literal;
                 }
+                tablaDeSimbolos.asignar(nombreVariable, valor);
                 break;
             case PRINT:
                 Nodo expresion = nodo.getHijos().get(0);
