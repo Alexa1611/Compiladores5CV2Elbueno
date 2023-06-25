@@ -2,9 +2,11 @@
 public class SolverAritmetico {
 
     private final Nodo nodo;
+    private final TablaDeSimbolos tablaDeSimbolos;
 
-    public SolverAritmetico(Nodo nodo) {
+    public SolverAritmetico(Nodo nodo, TablaDeSimbolos tablaDeSimbolos) {
         this.nodo = nodo;
+        this.tablaDeSimbolos = tablaDeSimbolos;
     }
 
     public Object resolver() {
@@ -18,6 +20,13 @@ public class SolverAritmetico {
                 return n.getValue().literal;
             } else if (n.getValue().tipo == TipoToken.IDENTIFICADOR) {
                 // Ver la tabla de símbolos
+            String nombreVariable = n.getValue().literal;
+            Object valor = tablaDeSimbolos.obtener(nombreVariable);
+            if (valor == null) {
+                throw new RuntimeException ("Error: Variable no existe");
+
+            }
+    return valor;
             }
         }
 
@@ -41,12 +50,13 @@ public class SolverAritmetico {
             }
         } else if (resultadoIzquierdo instanceof String && resultadoDerecho instanceof String) {
             if (n.getValue().tipo == TipoToken.SUMA) {
-               
+               return((String)resultadoIzquierdo + (String)resultadoDerecho);
             }
         } else {
-            
-        }
+            throw new RuntimeException ("Error: Diferentes tipos de operandos");
 
-        return null;
+        }
+            throw new RuntimeException ("Error: Operacion no valida");
+        
     }
 }  
