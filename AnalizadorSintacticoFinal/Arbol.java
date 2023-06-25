@@ -1,6 +1,4 @@
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Arbol {
     private final Nodo raiz;
@@ -24,8 +22,8 @@ public class Arbol {
                     break;
 
                 case VAR:
-                    String nombreVariable = nodo.getHijos().get(0).getValue().literal;
-                    Token valorToken = nodo.getHijos().get(1).getValue();
+                    String nombreVariable = n.getHijos().get(0).getValue().literal;
+                    Token valorToken = n.getHijos().get(1).getValue();
                     Object valor = null;
                     if (valorToken.tipo == TipoToken.NUMERO) {
                         valor = Double.parseDouble((valorToken.literal));
@@ -33,23 +31,10 @@ public class Arbol {
                     } else if (valorToken.tipo == TipoToken.CADENA) {
                         valor = valorToken.literal;
                     }
-
                     break;
-                case IF:
-
+                    default:
                     break;
-                case WHILE:
-                
-                    break;
-                case FOR:
-
-                    break;
-                case PRINT:
-
-                    break;
-
+                }
             }
         }
     }
-
-}
