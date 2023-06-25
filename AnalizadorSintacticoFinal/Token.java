@@ -4,7 +4,7 @@ public class Token {
     final TipoToken tipo;
     final String lexema;
     final int posicion;
-    final Object literal;
+    final String literal;
 
     public Token(TipoToken tipo, String lexema) {
         this.tipo = tipo;
@@ -22,7 +22,7 @@ public class Token {
 
     }
 
-    public Token(TipoToken tipo, String lexema, Object literal) {
+    public Token(TipoToken tipo, String lexema, String literal) {
         this.tipo = tipo;
         this.lexema = lexema;
         this.posicion = 0;

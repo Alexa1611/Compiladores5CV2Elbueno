@@ -41,12 +41,12 @@ public class SolverAritmetico {
             }
         } else if (resultadoIzquierdo instanceof String && resultadoDerecho instanceof String) {
             if (n.getValue().tipo == TipoToken.SUMA) {
-                // Ejecutar la concatenación
+               
             }
         } else {
-            // Error por diferencia de tipos
+            
         }
 
         return null;
     }
-} 
+}  
