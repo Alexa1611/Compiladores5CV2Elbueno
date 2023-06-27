@@ -6,6 +6,23 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Principal",
+            "request": "launch",
+            "mainClass": "Principal",
+            "projectName": "Compiladores5CV2Elbueno_f7641fb8",
+            "args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba2.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba3.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba4.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba5.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba6.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba7.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba8.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba9.txt"]
+          //"args": ["C:\\Users\\ezequ\\OneDrive\\Desktop\\Compiladores5CV2Elbueno\\AnalizadorSintacticoFinal\\Prueba10.txt"]
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

@@ -1,4 +1,3 @@
-
 public class SolverAritmetico {
 
     private final Nodo nodo;
@@ -19,14 +18,8 @@ public class SolverAritmetico {
             if (n.getValue().tipo == TipoToken.NUMERO || n.getValue().tipo == TipoToken.CADENA) {
                 return n.getValue().literal;
             } else if (n.getValue().tipo == TipoToken.IDENTIFICADOR) {
-                // Ver la tabla de símbolos
-            String nombreVariable =(String) n.getValue().literal;
-            Object valor = tablaDeSimbolos.obtener(nombreVariable);
-            if (valor == null) {
-                throw new RuntimeException ("Error: Variable no existe");
-
-            }
-    return valor;
+                // Obtener el valor del identificador de la tabla de símbolos
+                return tablaDeSimbolos.obtener(n.getValue().literal.toString());
             }
         }
 
@@ -50,13 +43,15 @@ public class SolverAritmetico {
             }
         } else if (resultadoIzquierdo instanceof String && resultadoDerecho instanceof String) {
             if (n.getValue().tipo == TipoToken.SUMA) {
-               return((String)resultadoIzquierdo + (String)resultadoDerecho);
+                // Ejecutar la concatenación de cadenas
+                return resultadoIzquierdo.toString() + resultadoDerecho.toString();
             }
         } else {
-            throw new RuntimeException ("Error: Diferentes tipos de operandos");
-
+            // Error por diferencia de tipos
+            throw new UnsupportedOperationException("Operación no válida entre los tipos de datos");
         }
-            throw new RuntimeException ("Error: Operacion no valida");
-        
+
+        return null;
     }
-}  
+}
+

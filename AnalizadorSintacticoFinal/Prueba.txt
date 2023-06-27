@@ -1,6 +1,5 @@
-//Prueba 6:
+// Prueba 1:
+var nombre = "Gabriel";
+var apellido = "Rodriguez";
 
-var nombre = "Hola mundo";
-fun presentarse(){
-    print nombre;
-}
+print nombre + " " + apellido;

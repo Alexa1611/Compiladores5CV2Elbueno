@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -8,13 +7,11 @@ public class GeneradorPostfija {
     private final List<Token> infija;
     private final Stack<Token> pila;
     private final List<Token> postfija;
-    private final TablaDeSimbolos tablaDeSimbolos; 
 
-    public GeneradorPostfija(List<Token> infija,  TablaDeSimbolos tablaDeSimbolos) {
+    public GeneradorPostfija(List<Token> infija) {
         this.infija = infija;
         this.pila = new Stack<>();
         this.postfija = new ArrayList<>();
-        this.tablaDeSimbolos = tablaDeSimbolos;
     }
 
     public List<Token> convertir() {
@@ -29,16 +26,12 @@ public class GeneradorPostfija {
             }
 
             if (t.esPalabraReservada()) {
-                /*
-                 * Si el token actual es una palabra reservada, se va directo a la
-                 * lista de salida.
-                 */
                 postfija.add(t);
                 if (t.esEstructuraDeControl()) {
                     estructuraDeControl = true;
                     pilaEstructurasDeControl.push(t);
                 }
-            } else if (t.esOperando()) {
+            } else if (t.esOperando() || t.tipo == TipoToken.CADENA) {
                 postfija.add(t);
             } else if (t.tipo == TipoToken.PARENTESIS_IZQ) {
                 pila.push(t);
@@ -66,40 +59,21 @@ public class GeneradorPostfija {
                 }
                 postfija.add(t);
             } else if (t.tipo == TipoToken.LLAVE_IZQ) {
-                // Se mete a la pila, tal como el parentesis. Este paso
-                // pudiera omitirse, sólo hay que tener cuidado en el manejo
-                // del "}".
                 pila.push(t);
             } else if (t.tipo == TipoToken.LLAVE_DER && estructuraDeControl) {
-
-                // Primero verificar si hay un else:
                 if (infija.get(i + 1).tipo == TipoToken.ELSE) {
-                    // Sacar el "{" de la pila
                     pila.pop();
                 } else {
-                    // En este punto, en la pila sólo hay un token: "{"
-                    // El cual se extrae y se añade un ";" a cadena postfija,
-                    // El cual servirá para indicar que se finaliza la estructura
-                    // de control.
                     pila.pop();
                     postfija.add(new Token(TipoToken.PUNTO_Y_COMA, ";", null));
-
-                    // Se extrae de la pila de estrucuras de control, el elemento en el tope
                     pilaEstructurasDeControl.pop();
                     if (pilaEstructurasDeControl.isEmpty()) {
                         estructuraDeControl = false;
                     }
-                }}
-                else if (t.esIdentificador()){
-                    Object valor = tablaDeSimbolos.obtener(t.literal.toString());
-                    if (valor != null){
-                        t.literal = valor.toString();
-                        postfija.add(t);
-                    } else { 
-                        throw new RuntimeException ("Error: Variable no encontrada");
                 }
             }
-            }
+        }
+
         while (!pila.isEmpty()) {
             Token temp = pila.pop();
             postfija.add(temp);
@@ -112,5 +86,4 @@ public class GeneradorPostfija {
 
         return postfija;
     }
-
 }
