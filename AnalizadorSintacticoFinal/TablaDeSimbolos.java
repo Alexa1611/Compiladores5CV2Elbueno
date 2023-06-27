@@ -6,7 +6,6 @@ public class TablaDeSimbolos {
     private static TablaDeSimbolos instance;
     private final Map<String, Object> values = new HashMap<>();
     private boolean existenErrores;
-
     private TablaDeSimbolos() {
         // Private constructor to prevent instantiation from outside the class
     }
