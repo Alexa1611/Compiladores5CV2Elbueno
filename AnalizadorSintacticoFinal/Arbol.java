@@ -1,17 +1,14 @@
-
-
 public class Arbol {
     private Nodo raiz;
     private final TablaDeSimbolos tablaDeSimbolos;
 
     public Arbol(Nodo raiz) {
         this.raiz = raiz;
-        this.tablaDeSimbolos = null;
+        this.tablaDeSimbolos = TablaDeSimbolos.getInstance();
     }
 
     public void recorrer() {
         recorrerNodo(raiz);
-
     }
 
     private void recorrerNodo(Nodo nodo) {
@@ -36,61 +33,78 @@ public class Arbol {
                 Token valorToken = nodo.getHijos().get(1).getValue();
                 Object valor = null;
                 if (valorToken.tipo == TipoToken.NUMERO) {
-                    valor = Double.parseDouble(String.valueOf(valorToken.literal.toString()));
-
+                    valor = Double.parseDouble(valorToken.literal.toString());
                 } else if (valorToken.tipo == TipoToken.CADENA) {
-                    valor = valorToken.literal;
+                    valor = valorToken.literal.toString();
                 }
                 tablaDeSimbolos.asignar(nombreVariable, valor);
                 break;
-            case PRINT:
-                Nodo expresion = nodo.getHijos().get(0);
-                SolverAritmetico print = new SolverAritmetico(expresion, tablaDeSimbolos);
-                Object printR = print.resolver();
-                System.out.println(printR);
-                break;
-            case WHILE:
-                Nodo condWhile = nodo.getHijos().get(0);
-                Nodo cuerpWhile = nodo.getHijos().get(1);
-                SolverAritmetico condsSolver = new SolverAritmetico(condWhile, tablaDeSimbolos);
-                boolean whileR = (boolean) condsSolver.resolver();
-                while (whileR) {
-                    recorrerNodo(cuerpWhile);
-                    condsSolver = new SolverAritmetico(condWhile, tablaDeSimbolos);
-                    whileR = (boolean) condsSolver.resolver();
-                }
-                break;
-            case FOR:
-                Nodo IniFor = nodo.getHijos().get(0);
-                Nodo condsFor = nodo.getHijos().get(1);
-                Nodo actFor = nodo.getHijos().get(2);
-                Nodo cuerpFor = nodo.getHijos().get(3);
-                recorrerNodo(IniFor);
-                SolverAritmetico condsForS = new SolverAritmetico(condsFor, tablaDeSimbolos);
-                boolean forR = (boolean) condsForS.resolver();
-                while (forR) {
-                    recorrerNodo(cuerpFor);
-                    recorrerNodo(actFor);
-                    condsForS = new SolverAritmetico(condsFor, tablaDeSimbolos);
-                    forR = (boolean) condsForS.resolver();
 
+            case PRINT:
+    Nodo identificadorNode = nodo.getHijos().get(0); // Obtener el nodo hijo que contiene el identificador
+    String identificador = identificadorNode.getValue().literal.toString();
+    Object valorImpresion = tablaDeSimbolos.obtener(identificador);
+    System.out.println(valorImpresion);
+    break;
+
+
+            case WHILE:
+                if (nodo.getHijos().size() < 2) {
+                    Principal.error(t.posicion, "Faltan operandos para el ciclo while");
+                    return;
+                }
+                Nodo condicionWhile = nodo.getHijos().get(0);
+                Nodo cuerpoWhile = nodo.getHijos().get(1);
+                SolverAritmetico condicionWhileSolver = new SolverAritmetico(condicionWhile, tablaDeSimbolos);
+                boolean whileR = (boolean) condicionWhileSolver.resolver();
+                while (whileR) {
+                    recorrerNodo(cuerpoWhile);
+                    condicionWhileSolver = new SolverAritmetico(condicionWhile, tablaDeSimbolos);
+                    whileR = (boolean) condicionWhileSolver.resolver();
                 }
                 break;
+
+            case FOR:
+                if (nodo.getHijos().size() < 4) {
+                    Principal.error(t.posicion, "Faltan operandos para el ciclo for");
+                    return;
+                }
+                Nodo inicializacionFor = nodo.getHijos().get(0);
+                Nodo condicionFor = nodo.getHijos().get(1);
+                Nodo actualizacionFor = nodo.getHijos().get(2);
+                Nodo cuerpoFor = nodo.getHijos().get(3);
+                recorrerNodo(inicializacionFor);
+                SolverAritmetico condicionForSolver = new SolverAritmetico(condicionFor, tablaDeSimbolos);
+                boolean forR = (boolean) condicionForSolver.resolver();
+                while (forR) {
+                    recorrerNodo(cuerpoFor);
+                    recorrerNodo(actualizacionFor);
+                    condicionForSolver = new SolverAritmetico(condicionFor, tablaDeSimbolos);
+                    forR = (boolean) condicionForSolver.resolver();
+                }
+                break;
+
             case IF:
-                Nodo condsIf = nodo.getHijos().get(0);
-                Nodo cuerpIf = nodo.getHijos().get(1);
-                SolverAritmetico condsIfS = new SolverAritmetico(condsIf, tablaDeSimbolos);
-                boolean ifR = (boolean) condsIfS.resolver();
+                if (nodo.getHijos().size() < 2) {
+                    Principal.error(t.posicion, "Faltan operandos para la estructura if");
+                    return;
+                }
+                Nodo condicionIf = nodo.getHijos().get(0);
+                Nodo cuerpoIf = nodo.getHijos().get(1);
+                SolverAritmetico condicionIfSolver = new SolverAritmetico(condicionIf, tablaDeSimbolos);
+                boolean ifR = (boolean) condicionIfSolver.resolver();
                 if (ifR) {
-                    recorrerNodo(cuerpIf);
+                    recorrerNodo(cuerpoIf);
                 }
                 break;
+
             default:
                 break;
         }
+
         for (Nodo n : nodo.getHijos()) {
             recorrerNodo(n);
         }
-
     }
 }
+

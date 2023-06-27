@@ -17,10 +17,13 @@ public class Principal {
             // Convención defininida en el archivo "system.h" de UNIX
             System.exit(64);
         } else if (args.length == 1) {
+
             ejecutarArchivo(args[0]);
         } else {
+
             ejecutarPrompt();
         }
+
     }
 
     private static void ejecutarArchivo(String path) throws IOException {
@@ -47,36 +50,40 @@ public class Principal {
     }
 
     private static void ejecutar(String source) {
-
         Scanner scanner = new Scanner(source);
-
         List<Token> tokens = scanner.scanTokens();
         /*
-         * for(Token t : tokens){
-         * System.out.println(t);
+         * System.out.println("\n Scanner \n");
+         * for(Token token : tokens){
+         * System.out.println(token);
          * }
          */
 
+        // Para este ejemplo no vamos a utilizar un parser
         Parser parser = new Parser(tokens);
         parser.parse();
-            TablaDeSimbolos tablaDeSimbolos = new TablaDeSimbolos();
-        
-         GeneradorPostfija gpf = new GeneradorPostfija(tokens, tablaDeSimbolos);
-         List<Token> postfija = gpf.convertir();
-         
 
-        
-         for(Token token : postfija){
-         System.out.println(token);
-         }
-        
-        
-         GeneradorAST gast = new GeneradorAST(postfija,tablaDeSimbolos);
-         Arbol programa = gast.generarAST();
-         programa.recorrer();
-         
+        GeneradorPostfija gpf = new GeneradorPostfija(tokens);
+        List<Token> postfija = gpf.convertir();
+        /*
+         * System.out.println("\nPostfija\n");
+         * for(Token token : postfija){
+         * 
+         * System.out.println(token);
+         * }
+         */
+
+        GeneradorAST gast = new GeneradorAST(postfija);
+        Arbol programa = gast.generarAST();
+        programa.recorrer();
+
     }
 
+    /*
+     * El método error se puede usar desde las distintas clases
+     * para reportar los errores:
+     * Interprete.error(....);
+     */
     static void error(int linea, String mensaje) {
         reportar(linea, "", mensaje);
     }
@@ -86,4 +93,5 @@ public class Principal {
                 "[linea " + linea + "] Error " + donde + ": " + mensaje);
         existenErrores = true;
     }
+
 }
