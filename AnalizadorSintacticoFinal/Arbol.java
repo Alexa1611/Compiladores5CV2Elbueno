@@ -41,12 +41,11 @@ public class Arbol {
                 break;
 
             case PRINT:
-    Nodo identificadorNode = nodo.getHijos().get(0); // Obtener el nodo hijo que contiene el identificador
-    String identificador = identificadorNode.getValue().literal.toString();
-    Object valorImpresion = tablaDeSimbolos.obtener(identificador);
-    System.out.println(valorImpresion);
-    break;
-
+                Nodo identificadorNode = nodo.getHijos().get(0); // Obtener el nodo hijo que contiene el identificador
+                String identificador = identificadorNode.getValue().literal.toString();
+                Object valorImpresion = tablaDeSimbolos.obtener(identificador);
+                System.out.println(valorImpresion);
+                break;
 
             case WHILE:
                 if (nodo.getHijos().size() < 2) {
@@ -107,4 +106,3 @@ public class Arbol {
         }
     }
 }
-

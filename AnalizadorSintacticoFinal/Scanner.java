@@ -103,8 +103,16 @@ public class Scanner {
                 case 2:
                     if (Character.isDigit(caracter)) {
                         lexema = lexema + caracter;
+                    } else if (caracter == '.' && !lexema.contains(".")) {
+                        lexema = lexema + caracter;
                     } else {
-                        tokens.add(new Token(TipoToken.NUMERO, lexema, inicioLexema + 1));
+                        try {
+                            double numero = Double.parseDouble(lexema);
+                            tokens.add(new Token(TipoToken.NUMERO, String.valueOf(numero), inicioLexema + 1));
+                        } catch (NumberFormatException e) {
+                            // Manejo del error si el número no es válido
+                            throw new IllegalArgumentException("Error de sintaxis: número inválido");
+                        }
                         estado = 0;
                         i--;
                         lexema = "";

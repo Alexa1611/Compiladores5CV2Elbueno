@@ -6,8 +6,9 @@ public class TablaDeSimbolos {
     private static TablaDeSimbolos instance;
     private final Map<String, Object> values = new HashMap<>();
     private boolean existenErrores;
+
     private TablaDeSimbolos() {
-        // Private constructor to prevent instantiation from outside the class
+        // Constructor privado para evitar la instanciación desde fuera de la clase
     }
 
     public static TablaDeSimbolos getInstance() {
@@ -32,10 +33,9 @@ public class TablaDeSimbolos {
     public void asignar(String identificador, Object valor) {
         values.put(identificador, valor);
 
-        obtener(identificador);
+        System.out.println(valor);
     }
 
-    
     public void reportarError(String mensaje) {
         System.err.println("[Error en la tabla de símbolos]: " + mensaje);
         existenErrores = true;

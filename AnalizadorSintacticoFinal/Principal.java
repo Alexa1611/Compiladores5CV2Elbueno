@@ -53,11 +53,11 @@ public class Principal {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
         /*
-         * System.out.println("\n Scanner \n");
-         * for(Token token : tokens){
-         * System.out.println(token);
-         * }
-         */
+         System.out.println("\n Scanner \n");
+         for(Token token : tokens){
+         System.out.println(token);
+          }*/
+         
 
         // Para este ejemplo no vamos a utilizar un parser
         Parser parser = new Parser(tokens);
@@ -65,13 +65,13 @@ public class Principal {
 
         GeneradorPostfija gpf = new GeneradorPostfija(tokens);
         List<Token> postfija = gpf.convertir();
-        /*
-         * System.out.println("\nPostfija\n");
-         * for(Token token : postfija){
-         * 
-         * System.out.println(token);
-         * }
-         */
+        /* 
+          System.out.println("\nPostfija\n");
+         for(Token token : postfija){
+          
+          System.out.println(token);
+          }*/
+         
 
         GeneradorAST gast = new GeneradorAST(postfija);
         Arbol programa = gast.generarAST();
