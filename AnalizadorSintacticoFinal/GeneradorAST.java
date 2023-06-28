@@ -60,8 +60,12 @@ public class GeneradorAST {
             
             if (pila.isEmpty()) {
                 // La pila está vacía, retrocede al padre anterior
-                pilaPadres.pop();
-                if (!pilaPadres.isEmpty()) {
+                
+                if (pilaPadres.isEmpty()) {
+                   System.err.println("Error: La pilaPadres está vacía"); 
+                }
+                padre = pilaPadres.peek();
+                if(!pilaPadres.isEmpty()){
                     padre = pilaPadres.peek();
                 }
             } else {
@@ -96,6 +100,7 @@ public class GeneradorAST {
     // Suponiendo que en la pila solamente queda un nodo
     // Nodo nodoAux = pila.pop();
     Arbol programa = new Arbol(raiz);
+    
 
     return programa;
 }

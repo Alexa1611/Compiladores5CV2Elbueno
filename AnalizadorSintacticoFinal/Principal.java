@@ -11,19 +11,17 @@ public class Principal {
     static boolean existenErrores = false;
 
     public static void main(String[] args) throws IOException {
+
         if (args.length > 1) {
             System.out.println("Uso correcto: interprete [script]");
 
             // Convención defininida en el archivo "system.h" de UNIX
             System.exit(64);
         } else if (args.length == 1) {
-
             ejecutarArchivo(args[0]);
         } else {
-
             ejecutarPrompt();
         }
-
     }
 
     private static void ejecutarArchivo(String path) throws IOException {
@@ -52,32 +50,20 @@ public class Principal {
     private static void ejecutar(String source) {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
-        /*
-         System.out.println("\n Scanner \n");
-         for(Token token : tokens){
-         System.out.println(token);
-          }*/
+
          
+            Parser parser = new Parser(tokens);
+            parser.parse();
+                        GeneradorPostfija postfija = new GeneradorPostfija(tokens);
+                List<Token> listaPos = postfija.convertir();
+                System.out.println(listaPos.toString());
+                GeneradorAST generador = new GeneradorAST(listaPos);
+                Arbol raiz = generador.generarAST();
+                raiz.recorrer();
+            }
+        
 
-        // Para este ejemplo no vamos a utilizar un parser
-        Parser parser = new Parser(tokens);
-        parser.parse();
-
-        GeneradorPostfija gpf = new GeneradorPostfija(tokens);
-        List<Token> postfija = gpf.convertir();
-        /* 
-          System.out.println("\nPostfija\n");
-         for(Token token : postfija){
-          
-          System.out.println(token);
-          }*/
-         
-
-        GeneradorAST gast = new GeneradorAST(postfija);
-        Arbol programa = gast.generarAST();
-        programa.recorrer();
-
-    }
+    
 
     /*
      * El método error se puede usar desde las distintas clases
@@ -89,9 +75,7 @@ public class Principal {
     }
 
     private static void reportar(int linea, String donde, String mensaje) {
-        System.err.println(
-                "[linea " + linea + "] Error " + donde + ": " + mensaje);
+        System.err.println("[linea " + linea + "] Error " + donde + ": " + mensaje);
         existenErrores = true;
     }
-
 }
