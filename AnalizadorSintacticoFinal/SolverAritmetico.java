@@ -24,7 +24,7 @@ private Nodo nodo;
                 if(TablaDeSimbolos.existeIdentificador(n.getValue().lexema)){
                     return TablaDeSimbolos.obtener(n.getValue().lexema);
                 }else {
-                    System.err.println("Error!! : Variable " +  n.getValue().lexema + " no definida ");
+                    System.err.println("Error : La variable " +  n.getValue().lexema + " no esta definida ");
                     System.exit(1);
                 }
             } else if (n.getValue().tipo == TipoToken.FALSE) {
