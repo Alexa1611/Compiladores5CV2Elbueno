@@ -47,22 +47,30 @@ public class GeneradorPostfija {
                     Token temp = pila.pop();
                     postfija.add(temp);
                 }
-                if(pila.peek().tipo == TipoToken.PARENTESIS_IZQ){
+                 if(!pila.isEmpty() && pila.peek().tipo == TipoToken.PARENTESIS_IZQ){
                     pila.pop();
                 }
 
-                // Esta sección de aquí es para manejar el ")" que cierra la
-                // condición de la estructura de control
-                if(estructuraDeControl && infija.get(i + 1).tipo == TipoToken.LLAVE_IZQ){
+          
+                if(estructuraDeControl ){
                     postfija.add(new Token(TipoToken.PUNTO_Y_COMA, ";", null));
                 }
-            }
+            
             else if(t.esOperador()){
                 while(!pila.isEmpty() && pila.peek().precedenciaMayorIgual(t)){
                     Token temp = pila.pop();
                     postfija.add(temp);
                 }
                 pila.push(t);
+            }
+             if (!pila.isEmpty() && t.tipo == TipoToken.RESTA){
+                    if (infija.get(i - 1).tipo != TipoToken.NUMERO && infija.get(i - 1).tipo != TipoToken.IDENTIFICADOR){
+                        Token cero = new Token(TipoToken.NUMERO, "0",0.0);
+                        postfija.add(cero);
+                    }
+                }
+                pila.push(t);
+
             }
             else if(t.tipo == TipoToken.PUNTO_Y_COMA){
                 while(!pila.isEmpty() && pila.peek().tipo != TipoToken.LLAVE_IZQ){
@@ -89,28 +97,21 @@ public class GeneradorPostfija {
                     // El cual se extrae y se añade un ";" a cadena postfija,
                     // El cual servirá para indicar que se finaliza la estructura
                     // de control.
-                    pila.pop();
+                    if(!pila.isEmpty()){
+                        pila.pop();
+                    }
                     postfija.add(new Token(TipoToken.PUNTO_Y_COMA, ";", null));
 
                     // Se extrae de la pila de estrucuras de control, el elemento en el tope
-                    Token aux = pilaEstructurasDeControl.pop();
-
-                    /*
-                        Si se da este caso, es necesario extraer el IF de la pila
-                        pilaEstructurasDeControl, y agregar los ";" correspondientes
-                     */
-                    if(aux.tipo == TipoToken.ELSE){
-                        pilaEstructurasDeControl.pop();
-                        postfija.add(new Token(TipoToken.PUNTO_Y_COMA, ";", null));
-                    }
+                    pilaEstructurasDeControl.pop();
                     if(pilaEstructurasDeControl.isEmpty()){
                         estructuraDeControl = false;
-                    }
                 }
 
 
             }
         }
+    }
         while(!pila.isEmpty()){
             Token temp = pila.pop();
             postfija.add(temp);

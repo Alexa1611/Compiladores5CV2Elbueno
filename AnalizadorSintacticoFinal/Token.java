@@ -94,6 +94,7 @@ public class Token {
             case ELSE:
             case WHILE:
             case FOR:
+            
                 return true;
             default:
                 return false;
@@ -118,27 +119,22 @@ public class Token {
 
     private int obtenerPrecedencia() {
         switch (this.tipo) {
+            case PUNTO:
+            return 4;
             case MULTIPLICACION:
             case DIVISION:
-                return 7;
+            return 3;
             case SUMA:
             case RESTA:
-                return 6;
-
+            return 2;
+            case IGUAL:
             case MAYOR_QUE:
             case MAYOR_IGUAL:
             case MENOR_QUE:
             case MENOR_IGUAL:
-                return 5;
-            case IGUAL_IGUAL:
             case DIFERENTE:
-                return 4;
-            case AND:
-                return 3;
-            case OR:
-                return 2;
-            case IGUAL:
-                return 1;
+            case IGUAL_IGUAL:
+            return 1;
         }
 
         return 0;
@@ -167,6 +163,8 @@ public class Token {
             case IGUAL:
 
                 return 2;
+                case NOT:
+                return 1;
         }
         return 0;
     }
