@@ -242,6 +242,9 @@ public class Parser {
         match(ifK);
         match(parentesisIzq);
         expression();
+        if(preanalisis.equals(andK)|| preanalisis.equals(orK)){
+            expression();
+        }
         match(parentesisDer);
         state_decl();
         else_state();

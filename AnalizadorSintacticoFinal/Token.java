@@ -5,7 +5,6 @@ public class Token {
     final String lexema;
     final int posicion;
     Object literal;
-    
 
     public Token(TipoToken tipo, String lexema) {
         this.tipo = tipo;
@@ -49,92 +48,131 @@ public class Token {
     }
 
     // Métodos auxiliares
-    public boolean esOperando(){
-        switch (this.tipo){
+    public boolean esOperando() {
+        switch (this.tipo) {
             case IDENTIFICADOR:
             case NUMERO:
+            case CADENA:
                 return true;
             default:
                 return false;
         }
     }
 
-    public boolean esOperador(){
-        switch (this.tipo){
+    public boolean esOperador() {
+        switch (this.tipo) {
+           case MULTIPLICACION:
+            case DIVISION:
+
             case SUMA:
             case RESTA:
-            case MULTIPLICACION:
-            case DIVISION:
-            case IGUAL:
+
             case MAYOR_QUE:
             case MAYOR_IGUAL:
+            case MENOR_QUE:
+            case MENOR_IGUAL:
+
+            case IGUAL_IGUAL:
+            case DIFERENTE:
+
+            case AND:
+
+            case OR:
+
+            case IGUAL:
                 return true;
             default:
                 return false;
         }
     }
 
-    public boolean esPalabraReservada(){
-        switch (this.tipo){
+    public boolean esPalabraReservada() {
+        switch (this.tipo) {
             case VAR:
             case IF:
             case PRINT:
             case ELSE:
+            case WHILE:
+            case FOR:
                 return true;
             default:
                 return false;
         }
     }
 
-    public boolean esEstructuraDeControl(){
-        switch (this.tipo){
+    public boolean esEstructuraDeControl() {
+        switch (this.tipo) {
             case IF:
             case ELSE:
+            case WHILE:
+            case FOR:
                 return true;
             default:
                 return false;
         }
     }
 
-    public boolean precedenciaMayorIgual(Token t){
+    public boolean precedenciaMayorIgual(Token t) {
         return this.obtenerPrecedencia() >= t.obtenerPrecedencia();
     }
 
-    private int obtenerPrecedencia(){
-        switch (this.tipo){
-            case MULTIPLICACION:
-            case DIVISION:
-                return 3;
-            case SUMA:
-            case RESTA:
-                return 2;
-            case IGUAL:
-                return 1;
-            case MAYOR_QUE:
-            case MAYOR_IGUAL:
-                return 1;
-        }
-
-        return 0;
-    }
-
-    public int aridad(){
+    private int obtenerPrecedencia() {
         switch (this.tipo) {
             case MULTIPLICACION:
             case DIVISION:
+                return 7;
             case SUMA:
             case RESTA:
-            case IGUAL:
+                return 6;
+
             case MAYOR_QUE:
             case MAYOR_IGUAL:
+            case MENOR_QUE:
+            case MENOR_IGUAL:
+                return 5;
+            case IGUAL_IGUAL:
+            case DIFERENTE:
+                return 4;
+            case AND:
+                return 3;
+            case OR:
+                return 2;
+            case IGUAL:
+                return 1;
+        }
+
+        return 0;
+    }
+
+    public int aridad() {
+        switch (this.tipo) {
+            case MULTIPLICACION:
+            case DIVISION:
+
+            case SUMA:
+            case RESTA:
+
+            case MAYOR_QUE:
+            case MAYOR_IGUAL:
+            case MENOR_QUE:
+            case MENOR_IGUAL:
+
+            case IGUAL_IGUAL:
+            case DIFERENTE:
+
+            case AND:
+
+            case OR:
+
+            case IGUAL:
+
                 return 2;
         }
         return 0;
     }
-    
-        public boolean esIdentificador()
-        {
-            return tipo == TipoToken.IDENTIFICADOR;
-        } 
+
+    public boolean esIdentificador() {
+        return tipo == TipoToken.IDENTIFICADOR;
+    }
 
 }
