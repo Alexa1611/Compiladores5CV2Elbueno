@@ -1,52 +1,60 @@
+
 package AnalizadorSintacticoFinal;
+
+
 public enum TipoToken {
-    // Palabras reservadas
-    CLASS,
-    FUN,
-    VAR,
-    IF,
-    ELSE,
-    PRINT,
-    RETURN,
-    WHILE,
-    TRUE,
-    FALSE,
-    NULL,
-    THIS,
-    FOR,
-    OR,
-    AND,
-    EXTENDS,
+    // Crear un tipoToken por palabra reservada
+    // Crear un tipoToken: identificador, una cadena y numero
+    // Crear un tipoToken por cada "Signo del lenguaje" (ver clase Scanner)
 
-    // Operadores y signos de puntuación
-    ASIGNACION,
-    SUMA,
-    RESTA,
-    MULTIPLICACION,
-    DIVISION,
-    PARENTESIS_IZQ,
-    PARENTESIS_DER,
-    CORCHETE_IZQ,
-    CORCHETE_DER,
-    PUNTO,
-    IGUAL,
-    DIFERENTE,
-    IGUAL_IGUAL,
-    MAYOR_QUE,
-    MAYOR_IGUAL,
-    MENOR_QUE,
-    MENOR_IGUAL,
-    NOT,
-    LLAVE_IZQ,
-    LLAVE_DER,
 
-    // Otros tokens
-    IDENTIFICADOR,
-    NUMERO,
-    CADENA,
-    COMA,
-    PUNTO_Y_COMA,
-    ERROR,
-    SUPER,
-    EOF,
+    // Palabras clave:
+
+   Y, 
+   CLASE, 
+   ADEMAS,
+   PARA, 
+   FUNCION,
+   SI, 
+   NULO,
+   IMPRIMIR,
+   DEVOLVER,
+   SUPER,
+   ESTE,
+   VERDADERO,
+   FALSO, 
+   MIENTRAS,
+   VARIABLE,
+   O, 
+   
+   NO,
+   IGUAL,
+   DIFERENTE,
+   ASIGNAR,
+   MENOR_QUE,
+   MENOR_IGUAL, 
+   MAYOR_QUE,
+   MAYOR_IGUAL, 
+   NUMERO, 
+   CADENA,
+   
+   IDENTIFICADOR,
+   
+   
+   SUMA,
+   RESTA,
+   MULTIPLICACION,
+   DIVISION,
+  
+  
+   PARENTESIS_IZQ,
+   PARENTESIS_DER,
+   CORCHETE_IZQ, 
+   CORCHETE_DER, 
+   COMA, 
+   PUNTO,
+   PUNTO_Y_COMA,
+   LLAVE_DER,
+   LLAVE_IZQ,
+    EOF
 }

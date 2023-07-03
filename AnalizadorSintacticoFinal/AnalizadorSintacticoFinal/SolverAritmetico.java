@@ -29,15 +29,15 @@ public class SolverAritmetico {
                 }
                 else
                 {
-                    System.out.println("La variable " +  n.getValue().lexema + " no existe");
+                    System.out.println("La variable '" +  n.getValue().lexema + "' no existe");
                     System.exit(1);
                 }
             }
-            else if (n.getValue().tipo == TipoToken.FALSE)
+            else if (n.getValue().tipo == TipoToken.FALSO)
             {
                 return false;
             }
-            else if (n.getValue().tipo == TipoToken.TRUE)
+            else if (n.getValue().tipo == TipoToken.VERDADERO)
             {
                 return true;
             }
@@ -67,18 +67,19 @@ public class SolverAritmetico {
                     return ((Double)resultadoIzquierdo > (Double) resultadoDerecho);
                 case MAYOR_IGUAL:
                     return ((Double)resultadoIzquierdo >= (Double) resultadoDerecho);
-                case IGUAL_IGUAL:
+                case IGUAL:
                     return (((Double) resultadoIzquierdo).equals((Double) resultadoDerecho));
                 case DIFERENTE:
                     return (!((Double) resultadoIzquierdo).equals((Double) resultadoDerecho));
-                case IGUAL:
+                case ASIGNAR:
                     if (izq.getValue().tipo == TipoToken.IDENTIFICADOR)
                     {
                         TablaDeSimbolos.asignar(izq.getValue().lexema, resultadoDerecho);
                     }
                     break;
-default:
-break;
+                    default:
+                    break;
+
             }
         }
         else if(resultadoIzquierdo instanceof String && resultadoDerecho instanceof String)
@@ -87,7 +88,7 @@ break;
             {
                 // Ejecutar la concatenación
 
-                return (String) resultadoIzquierdo.toString() + resultadoDerecho;
+                return (String) resultadoIzquierdo + resultadoDerecho;
             }
             else
             {
@@ -100,9 +101,9 @@ break;
         {
             switch (n.getValue().tipo)
             {
-                case AND:
+                case Y:
                     return ((Boolean) resultadoIzquierdo && (Boolean) resultadoDerecho);
-                case OR:
+                case O:
                     return ((Boolean) resultadoIzquierdo || (Boolean) resultadoDerecho);
                     default:
                     break;

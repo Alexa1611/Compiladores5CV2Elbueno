@@ -1,7 +1,7 @@
 // Prueba 5:
-var radio = 5;
-var pi = 3.1416;
-var area = pi * radio * radio;
+variable radio = 5;
+variable pi = 3.1416;
+variable area = pi * radio * radio;
 
-print "El area es: ";
-print area;
+imprimir "El area es: ";
+imprimir area;

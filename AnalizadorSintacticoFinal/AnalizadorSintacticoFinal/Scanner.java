@@ -1,218 +1,414 @@
+
 package AnalizadorSintacticoFinal;
+
+
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Scanner {
+
+public class Scanner
+{
+
     private final String source;
+   
+
     private final List<Token> tokens = new ArrayList<>();
 
+    
     private static final Map<String, TipoToken> palabrasReservadas;
-
-    static {
+    static
+    {
         palabrasReservadas = new HashMap<>();
-        palabrasReservadas.put("class", TipoToken.CLASS);
-        palabrasReservadas.put("fun", TipoToken.FUN);
-        palabrasReservadas.put("var", TipoToken.VAR);
-        palabrasReservadas.put("if", TipoToken.IF);
-        palabrasReservadas.put("else", TipoToken.ELSE);
-        palabrasReservadas.put("print", TipoToken.PRINT);
-        palabrasReservadas.put("return", TipoToken.RETURN);
-        palabrasReservadas.put("while", TipoToken.WHILE);
-        palabrasReservadas.put("true", TipoToken.TRUE);
-        palabrasReservadas.put("false", TipoToken.FALSE);
-        palabrasReservadas.put("null", TipoToken.NULL);
-        palabrasReservadas.put("this", TipoToken.THIS);
-        palabrasReservadas.put("for", TipoToken.FOR);
-        palabrasReservadas.put("and",TipoToken.AND);
-        palabrasReservadas.put("or",TipoToken.OR);
+        palabrasReservadas.put("y", TipoToken.Y);
+        palabrasReservadas.put("clase", TipoToken.CLASE);
+        palabrasReservadas.put("ademas", TipoToken.ADEMAS);
+        palabrasReservadas.put("falso", TipoToken.FALSO);
+        palabrasReservadas.put("para", TipoToken.PARA);
+        palabrasReservadas.put("funcion", TipoToken.FUNCION); //definir funciones
+        palabrasReservadas.put("si", TipoToken.SI);
+        palabrasReservadas.put("nulo", TipoToken.NULO);
+        palabrasReservadas.put("o", TipoToken.O);
+        palabrasReservadas.put("imprimir", TipoToken.IMPRIMIR);
+        palabrasReservadas.put("devolver", TipoToken.DEVOLVER);
+        palabrasReservadas.put("super", TipoToken.SUPER);
+        palabrasReservadas.put("este", TipoToken.ESTE);
+        palabrasReservadas.put("verdadero", TipoToken.VERDADERO);
+        palabrasReservadas.put("variable", TipoToken.VARIABLE); //definir variables
+        palabrasReservadas.put("mientras", TipoToken.MIENTRAS);
     }
 
-    public Scanner(String source) {
+
+    Scanner(String source)
+    {
         this.source = source + " ";
     }
 
-    public List<Token> scanTokens() {
-        int estado = 0;
-        char caracter = 0;
+    List<Token> scanTokens()
+    {
+        int Estado, Posicion;
+        char Caracter;
         String lexema = "";
         int inicioLexema = 0;
 
-        for (int i = 0; i < source.length(); i++) {
-            caracter = source.charAt(i);
+        Estado = 0;
 
-            switch (estado) {
+
+        for (Posicion=0; Posicion<source.length(); Posicion++)
+        {
+            Caracter = source.charAt(Posicion);
+
+            switch(Estado)
+            {
                 case 0:
-                    if(caracter == '.'){
-                        tokens.add(new Token(TipoToken.PUNTO,".", i+1));
+
+                    if (Caracter=='(')
+                    {
+                        tokens.add(new Token(TipoToken.PARENTESIS_IZQ, "("));
                     }
-                    else if (caracter == '=') {
-                        estado = 4;
-                    } else if (caracter == '>') {
-                        estado = 12;
-                    } else if (caracter == '+') {
-                        tokens.add(new Token(TipoToken.SUMA, "+", i + 1));
-                    } else if (caracter == '-') {
-                        tokens.add(new Token(TipoToken.RESTA, "-", i + 1));
-                    } else if (caracter == '*') {
-                        tokens.add(new Token(TipoToken.MULTIPLICACION, "*", i + 1));
-                    } else if (caracter == '/') {
-                        estado = 5;
-                    } else if (caracter == '<') {
-                        estado = 11;
-                    } else if (caracter == '(') {
-                        tokens.add(new Token(TipoToken.PARENTESIS_IZQ, "(", i + 1));
-                    } else if (caracter == ')') {
-                        tokens.add(new Token(TipoToken.PARENTESIS_DER, ")", i + 1));
-                    } else if (caracter == '{') {
-                        tokens.add(new Token(TipoToken.LLAVE_IZQ, "{", i + 1));
-                    } else if (caracter == '}') {
-                        tokens.add(new Token(TipoToken.LLAVE_DER, "}", i + 1));
-                    } else if (caracter == ',') {
-                        tokens.add(new Token(TipoToken.COMA, ",", i + 1));
-                    } else if (caracter == ';') {
-                        tokens.add(new Token(TipoToken.PUNTO_Y_COMA, ";", i + 1));
-                    } else if (Character.isAlphabetic(caracter)) {
-                        estado = 1;
-                        lexema = lexema + caracter;
-                        inicioLexema = i;
-                    } else if (Character.isDigit(caracter)) {
-                        estado = 2;
-                        lexema = lexema + caracter;
-                        inicioLexema = i;
-                    } else if (caracter == '\"') {
-                        estado = 3;
-                        lexema = lexema + caracter;
-                        inicioLexema = i;
+                    else if(Caracter==')')
+                    {
+                        tokens.add(new Token(TipoToken.PARENTESIS_DER, ")"));
+                    }
+                    else if(Caracter=='{')
+                    {
+                        tokens.add(new Token(TipoToken.LLAVE_IZQ, "{"));
+                    }
+                    else if(Caracter=='}')
+                    {
+                        tokens.add(new Token(TipoToken.LLAVE_DER, "}"));
+                    }
+                    else if(Caracter==',')
+                    {
+                        tokens.add(new Token(TipoToken.COMA, ","));
+                    }
+                    else if(Caracter=='.')
+                    {
+                        tokens.add(new Token(TipoToken.PUNTO, "."));
+                    }
+                    else if(Caracter==';')
+                    {
+                        tokens.add(new Token(TipoToken.PUNTO_Y_COMA, ";"));
+                    }
+                    else if(Caracter=='-')
+                    {
+                        tokens.add(new Token(TipoToken.RESTA, "-"));
+                    }
+                    else if(Caracter=='+')
+                    {
+                        tokens.add(new Token(TipoToken.SUMA, "+"));
+                    }
+                    else if(Caracter=='*')
+                    {
+                        tokens.add(new Token(TipoToken.MULTIPLICACION, "*"));
+                    }
+                    else if(Caracter=='/')
+                    {
+                        Estado = 1;
+                    }
+                    else if(Caracter=='!')
+                    {
+                        Estado = 2;
+                    }
+                    else if(Caracter=='=')
+                    {
+                        Estado = 3;
+                    }
+                    else if(Caracter=='<')
+                    {
+                        Estado = 4;
+                    }
+                    else if(Caracter=='>')
+                    {
+                        Estado = 5;
+                    }
+                    else if(Caracter=='"')
+                    {
+                        Estado = 9;
+                    }
+                    else if(Character.isDigit(Caracter))
+                    {
+                        Estado = 10;
+                        lexema = lexema + Caracter;
+                    }
+                    else if(Character.isAlphabetic(Caracter))
+                    {
+                        Estado = 16;
+                        lexema = lexema + Caracter;
+                        inicioLexema = Posicion;
                     }
                     break;
 
                 case 1:
-                    if (Character.isAlphabetic(caracter) || Character.isDigit(caracter)) {
-                        lexema = lexema + caracter;
-                    } else {
-                        TipoToken tt = palabrasReservadas.get(lexema);
-                        if (tt == null) {
-                            tokens.add(new Token(TipoToken.IDENTIFICADOR, lexema, inicioLexema + 1));
-                        } else {
-                            tokens.add(new Token(tt, lexema, inicioLexema + 1));
-                        }
 
-                        estado = 0;
-                        i--;
-                        lexema = "";
-                        inicioLexema = 0;
+                    if(Caracter=='/')
+                    {
+                        Estado = 6;
                     }
+                    else if(Caracter=='*')
+                    {
+                        Estado = 7;
+                    }
+                    else
+                    {
+                        Posicion--;
+                        tokens.add(new Token(TipoToken.DIVISION, "/"));
+                        Estado = 0;
+                    }
+
                     break;
-
                 case 2:
-                    if (Character.isDigit(caracter)) {
-                        lexema = lexema + caracter;
-                    } else if (caracter == '.' && !lexema.contains(".")) {
-                        lexema = lexema + caracter;
-                    } else {
-                        try {
-                            double numero = Double.parseDouble(lexema);
-                            tokens.add(new Token(TipoToken.NUMERO, String.valueOf(numero), inicioLexema + 1));
-                        } catch (NumberFormatException e) {
-                            // Manejo del error si el número no es válido
-                            throw new IllegalArgumentException("Error de sintaxis: número inválido");
-                        }
-                        estado = 0;
-                        i--;
-                        lexema = "";
-                        inicioLexema = 0;
+
+                    if (Caracter=='=')
+                    {
+                        tokens.add(new Token(TipoToken.DIFERENTE, "!="));
                     }
+                    else
+                    {
+                        Posicion--;
+                        tokens.add(new Token(TipoToken.NO, "!"));
+                    }
+
+                    Estado = 0;
+
                     break;
 
                 case 3:
-                    if (caracter != '\"') {
-                        lexema = lexema + caracter;
-                    } else {
-                        tokens.add(new Token(TipoToken.CADENA, lexema.substring(1, lexema.length()), inicioLexema + 1));
-                        estado = 0;
-                        lexema = "";
-                        inicioLexema = 0;
+
+                    if(Caracter=='=')
+                    {
+                        tokens.add(new Token(TipoToken.IGUAL, "=="));
                     }
+                    else
+                    {
+                        Posicion--;
+                        tokens.add(new Token(TipoToken.ASIGNAR, "="));
+                    }
+
+                    Estado = 0;
+
                     break;
 
                 case 4:
-                    if (caracter == '=') {
-                        tokens.add(new Token(TipoToken.IGUAL_IGUAL, "==", i + 1));
-                        estado = 0;
-                    } else {
-                        tokens.add(new Token(TipoToken.IGUAL, "=", inicioLexema + 1));
-                        estado = 0;
-                        lexema = "";
-                        inicioLexema = 0;
-                        i--;
+
+                    if (Caracter=='=')
+                    {
+                        tokens.add(new Token(TipoToken.MENOR_IGUAL, "<="));
                     }
+                    else
+                    {
+                        Posicion--;
+                        tokens.add(new Token(TipoToken.MENOR_QUE, "<"));
+                    }
+
+                    Estado = 0;
+
                     break;
 
                 case 5:
-                    if (caracter == '/') {
-                        // Comentario de una línea, se omite el resto de la línea actual
-                        i = source.indexOf('\n', i); // Salta hasta el final de la línea
-                        estado = 0;
-                    } else if (caracter == '*') {
-                        // Comentario de varias líneas, se omite hasta encontrar el cierre del comentario
-                        estado = 6;
-                    } else {
-                        tokens.add(new Token(TipoToken.DIVISION, "/", i + 1));
-                        estado = 0;
-                        lexema = "";
-                        inicioLexema = 0;
-                        i--;
+
+                    if (Caracter=='=')
+                    {
+                        tokens.add(new Token(TipoToken.MAYOR_IGUAL,">="));
                     }
+                    else
+                    {
+                        Posicion--;
+                        tokens.add(new Token(TipoToken.MAYOR_QUE, ">"));
+                    }
+
+                    Estado = 0;
+
                     break;
 
                 case 6:
-                    if (caracter == '*') {
-                        if (source.charAt(i + 1) == '/') {
-                            // Cierre del comentario de varias líneas
-                            i++; // Avanza el índice para evitar agregar el carácter '/'
-                            estado = 0;
-                        }
-                    } else if (caracter == '\0') {
-                        // Si se alcanza el final del código sin encontrar el cierre del comentario, se genera un error
-                        throw new IllegalArgumentException("Error de sintaxis: comentario de varias líneas no cerrado");
+
+                    if(Caracter=='\n')
+                    {
+                        Estado = 0;
                     }
+                    else
+                    {
+                        Estado = 6;
+                    }
+
+                    break;
+
+                case 7:
+
+                    if(Caracter=='*')
+                    {
+                        Estado = 8;
+                    }
+                    else
+                    {
+                        Estado = 7;
+                    }
+
+                    break;
+
+                case 8:
+
+                    if(Caracter=='/')
+                    {
+                        Estado = 0;
+                    }
+                    else
+                    {
+                        Estado = 7;
+                    }
+
+                    break;
+
+                case 9:
+
+                    if(Caracter == '"')
+                    {
+                        tokens.add(new Token(TipoToken.CADENA,lexema,lexema));
+
+                        lexema ="";
+                        Estado = 0;
+                    }
+                    else
+                    {
+                        Estado = 9;
+                        lexema = lexema + Caracter;
+                    }
+
+
+                    break;
+
+                case 10:
+
+                    if(Character.isDigit(Caracter))
+                    {
+                        Estado = 10;
+                        lexema = lexema + Caracter;
+                    }
+                    else if(Caracter == '.')
+                    {
+                        Estado = 11;
+                        lexema = lexema + Caracter;
+                    }
+                    else if(Caracter == 'E')
+                    {
+                        Estado = 13;
+                        lexema = lexema + Caracter;
+                    }
+                    else
+                    {
+                        Posicion--;
+                        tokens.add(new Token(TipoToken.NUMERO,lexema,Double.valueOf(lexema)));
+                        lexema="";
+
+                        Estado = 0;
+                    }
+
                     break;
 
                 case 11:
-                    if (caracter == '=') {
-                        tokens.add(new Token(TipoToken.MENOR_IGUAL, "<=", i + 1));
-                        estado = 0;
-                        lexema = "";
-                        inicioLexema = 0;
-                    } else {
-                        tokens.add(new Token(TipoToken.MENOR_QUE, "<", i + 1));
-                        estado = 0;
-                        lexema = "";
-                        inicioLexema = 0;
-                        i--;
+                    if(Character.isDigit(Caracter))
+                    {
+                        Estado = 12;
+                        lexema = lexema + Caracter;
                     }
                     break;
 
                 case 12:
-                    if (caracter == '=') {
-                        tokens.add(new Token(TipoToken.MAYOR_IGUAL, ">=", i + 1));
-                        estado = 0;
+                    if(Character.isDigit(Caracter))
+                    {
+                        Estado = 12;
+                        lexema = lexema + Caracter;
+                    }
+                    else if(Caracter == 'E')
+                    {
+                        Estado = 13;
+                        lexema = lexema + Caracter;
+                    }
+                    else
+                    {
+                        Posicion--;
+                        tokens.add(new Token(TipoToken.NUMERO,lexema,Double.valueOf(lexema)));
+                        lexema ="";
+                        Estado = 0;
+                    }
+                    break;
+
+                case 13:
+                    if(Caracter == '+' || Caracter == '-')
+                    {
+                        Estado = 14;
+                        lexema = lexema + Caracter;
+                    }
+                    else if(Character.isDigit(Caracter))
+                    {
+                        Estado = 15;
+                        lexema = lexema + Caracter;
+                    }
+                    break;
+
+                case 14:
+                    if(Character.isDigit(Caracter))
+                    {
+                        Estado = 15;
+                        lexema = lexema + Caracter;
+                    }
+                    break;
+
+                case 15:
+                    if(Character.isDigit(Caracter))
+                    {
+                        Estado = 15;
+                        lexema = lexema + Caracter;
+                    }
+                    else
+                    {
+                        Posicion--;
+                        tokens.add(new Token(TipoToken.NUMERO,lexema,Double.valueOf(lexema)));
+                        lexema = "";
+
+                        Estado = 0;
+                    }
+                    break;
+
+                case 16:
+
+                    if(Character.isAlphabetic(Caracter) || Character.isDigit(Caracter) )
+                    {
+                        lexema = lexema + Caracter;
+                    }
+                    else
+                    {
+                        TipoToken tt = palabrasReservadas.get(lexema);
+                        if(tt == null)
+                        {
+                            tokens.add(new Token(TipoToken.IDENTIFICADOR, lexema));
+                        }
+                        else
+                        {
+                            tokens.add(new Token(tt, lexema));
+                        }
+
+                        Estado = 0;
+                        Posicion--;
                         lexema = "";
                         inicioLexema = 0;
-                    } else {
-                        tokens.add(new Token(TipoToken.MAYOR_QUE, ">", inicioLexema + 1));
-                        estado = 0;
-                        lexema = "";
-                        inicioLexema = 0;
-                        i--;
                     }
                     break;
 
             }
         }
-        tokens.add(new Token(TipoToken.EOF, "", source.length()));
+        //Aquí va el corazón del scanner.
+
+
+        /*
+        Analizar el texto de entrada para extraer todos los tokens
+        y al final agregar el token de fin de archivo
+         */
+        tokens.add(new Token(TipoToken.EOF,""));
 
         return tokens;
     }
