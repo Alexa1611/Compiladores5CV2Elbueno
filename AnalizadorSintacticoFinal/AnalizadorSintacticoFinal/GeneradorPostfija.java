@@ -1,3 +1,4 @@
+package AnalizadorSintacticoFinal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,10 @@ public class GeneradorPostfija {
                     // El cual se extrae y se añade un ";" a cadena postfija,
                     // El cual servirá para indicar que se finaliza la estructura
                     // de control.
-                    pila.pop();
+                    if(!pila.isEmpty())
+                    {
+                        pila.pop();
+                    }
                     postfija.add(new Token(TipoToken.PUNTO_Y_COMA, ";", null));
 
                     // Se extrae de la pila de estrucuras de control, el elemento en el tope
