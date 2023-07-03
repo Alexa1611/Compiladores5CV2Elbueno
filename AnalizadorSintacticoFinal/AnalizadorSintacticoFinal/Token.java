@@ -1,5 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package AnalizadorSintacticoFinal;
-
 
 
 public class Token {
@@ -51,16 +55,16 @@ public class Token {
             case RESTA:
             case MULTIPLICACION:
             case DIVISION:
-            case IGUAL_IGUAL:
+            case IGUAL:
             case MAYOR_QUE:
             case MAYOR_IGUAL:
                 //
             case MENOR_IGUAL:
             case MENOR_QUE:
             case DIFERENTE:
-            case IGUAL:
-            case AND:
-            case OR:
+            case ASIGNAR:
+            case Y:
+            case O:
                 return true;
             default:
                 return false;
@@ -71,12 +75,12 @@ public class Token {
     {
         switch (this.tipo)
         {
-            case VAR:
-            case IF:
-            case PRINT:
-            case ELSE:
-            case WHILE:
-            case FOR:
+            case VARIABLE:
+            case SI:
+            case IMPRIMIR:
+            case ADEMAS:
+            case MIENTRAS:
+            case PARA:
                 return true;
             default:
                 return false;
@@ -87,10 +91,10 @@ public class Token {
     {
         switch (this.tipo)
         {
-            case IF:
-            case FOR:
-            case WHILE:
-            case ELSE:
+            case SI:
+            case PARA:
+            case MIENTRAS:
+            case ADEMAS:
                 return true;
             default:
                 return false;
@@ -112,7 +116,7 @@ public class Token {
             case SUMA:
             case RESTA:
                 return 6;
-            case IGUAL:
+            case ASIGNAR:
                 return 1;
             case MAYOR_IGUAL:
             case MAYOR_QUE:
@@ -120,11 +124,11 @@ public class Token {
             case MENOR_IGUAL:
                 return 5;
             case DIFERENTE:
-            case IGUAL_IGUAL:
+            case IGUAL:
                 return 4;
-            case AND:
+            case Y:
                 return 3;
-            case OR:
+            case O:
                 return 2;
                 default:
                 break;
@@ -141,14 +145,14 @@ public class Token {
             case DIVISION:
             case SUMA:
             case RESTA:
-            case IGUAL_IGUAL:
             case IGUAL:
+            case ASIGNAR:
             case MAYOR_QUE:
             case MAYOR_IGUAL:
             case MENOR_IGUAL:
             case MENOR_QUE:
-            case AND:
-            case OR:
+            case Y:
+            case O:
                 return 2;
                 default:
                 break;

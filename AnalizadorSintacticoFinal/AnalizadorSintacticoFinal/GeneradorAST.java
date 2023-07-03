@@ -71,7 +71,7 @@ public class GeneradorAST
                 {
                     Nodo n = pila.pop();
 
-                    if(padre.getValue().tipo == TipoToken.VAR)
+                    if(padre.getValue().tipo == TipoToken.VARIABLE)
                     {
                         /*
                         En el caso del VAR, es necesario eliminar el igual que
@@ -88,7 +88,7 @@ public class GeneradorAST
                         pilaPadres.pop();
                         padre = pilaPadres.peek();
                     }
-                    else if(padre.getValue().tipo == TipoToken.PRINT)
+                    else if(padre.getValue().tipo == TipoToken.IMPRIMIR)
                     {
                         padre.insertarSiguienteHijo(n);
                         pilaPadres.pop();

@@ -82,7 +82,7 @@ public class GeneradorPostfija {
             else if(t.tipo == TipoToken.LLAVE_DER && estructuraDeControl){
 
                 // Primero verificar si hay un else:
-                if(infija.get(i + 1).tipo == TipoToken.ELSE){
+                if(infija.get(i + 1).tipo == TipoToken.ADEMAS){
                     // Sacar el "{" de la pila
                     pila.pop();
                 }
@@ -104,7 +104,7 @@ public class GeneradorPostfija {
                         Si se da este caso, es necesario extraer el IF de la pila
                         pilaEstructurasDeControl, y agregar los ";" correspondientes
                      */
-                    if(aux.tipo == TipoToken.ELSE){
+                    if(aux.tipo == TipoToken.ADEMAS){
                         pilaEstructurasDeControl.pop();
                         postfija.add(new Token(TipoToken.PUNTO_Y_COMA, ";", null));
                     }

@@ -22,13 +22,15 @@ public class Arbol {
                 case MAYOR_QUE:
                 case IGUAL:
                 case DIFERENTE:
-                case IGUAL_IGUAL:
+                case ASIGNAR:
                     SolverAritmetico solver = new SolverAritmetico(n);
-                    solver.resolver();
+                    Object res = solver.resolver();
                     // System.out.println(res);
                     break;
+                default:
+                    break;
 
-                case VAR:
+                case VARIABLE:
                     // Crear una variable. Usar tabla de simbolos
 
                     Nodo VerHijos = n.getHijos().get(0);
@@ -60,7 +62,7 @@ public class Arbol {
                     }
 
                     break;
-                case IF:
+                case SI:
                     Nodo VerHijos1 = n.getHijos().get(0);
                     int ELSE = n.getHijos().size() - 1;
 
@@ -75,7 +77,7 @@ public class Arbol {
                     if (ConCumIf) {
                         for (int a = 0; a <= n.getHijos().size() - 1; a++) {
 
-                            if (n.getHijos().get(a).getValue().tipo == TipoToken.ELSE) {
+                            if (n.getHijos().get(a).getValue().tipo == TipoToken.ADEMAS) {
                                 a++;
                             } else {
                                 Nodo Aux = new Nodo(null);
@@ -85,7 +87,7 @@ public class Arbol {
                                 NuevoArbol.recorrer();
                             }
                         }
-                    } else if (n.getHijos().get(ELSE).getValue().tipo == TipoToken.ELSE) {
+                    } else if (n.getHijos().get(ELSE).getValue().tipo == TipoToken.ADEMAS) {
                         Nodo Aux = new Nodo(null);
                         Nodo ademas = n.getHijos().get(ELSE);
                         Aux.insertarHijo(ademas);
@@ -94,7 +96,7 @@ public class Arbol {
                     }
 
                     break;
-                case ELSE:
+                case ADEMAS:
                     if (n.getHijos() == null) {
                         System.out.println("Faltan elementos dentro del else");
                         System.exit(1);
@@ -108,7 +110,7 @@ public class Arbol {
                         NuevoArbol.recorrer();
                     }
                     break;
-                case PRINT:
+                case IMPRIMIR:
 
                     Nodo print = n.getHijos().get(0);
                     SolverAritmetico Slv = new SolverAritmetico(print);
@@ -116,8 +118,7 @@ public class Arbol {
                     System.out.println(resultado);
 
                     break;
-
-                case WHILE:
+                case MIENTRAS:
                     Nodo condicion = n.getHijos().get(0);
                     Nodo cuerpo = n.getHijos().get(1);
 
@@ -135,7 +136,7 @@ public class Arbol {
                     }
                     break;
 
-                case FOR:
+                case PARA:
                     Nodo inicializacion = n.getHijos().get(0);
                     Nodo condicionPara = n.getHijos().get(1);
                     Nodo incremento = n.getHijos().get(2);
@@ -165,8 +166,6 @@ public class Arbol {
                     }
                     break;
 
-                default:
-                    break;
             }
         }
     }

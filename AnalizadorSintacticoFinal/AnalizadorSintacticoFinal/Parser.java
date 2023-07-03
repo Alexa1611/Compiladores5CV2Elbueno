@@ -1,54 +1,50 @@
-package AnalizadorSintacticoFinal; 
+
+package AnalizadorSintacticoFinal;
+
 import java.util.List;
 
 public class Parser {
 
     private final List<Token> tokens;
-
-    // Palabras reservadas
-    private final Token classK = new Token(TipoToken.CLASS, "class");
-    private final Token funK = new Token(TipoToken.FUN, "fun");
-    private final Token varK = new Token(TipoToken.VAR, "var");
-    private final Token ifK = new Token(TipoToken.IF, "if");
-    private final Token elseK = new Token(TipoToken.ELSE, "else");
-    private final Token forK = new Token(TipoToken.FOR, "for");
-    private final Token printK = new Token(TipoToken.PRINT, "print");
-    private final Token returnK = new Token(TipoToken.RETURN, "return");
-    private final Token whileK = new Token(TipoToken.WHILE, "while");
-    private final Token trueK = new Token(TipoToken.TRUE, "true");
-    private final Token falseK = new Token(TipoToken.FALSE, "false");
-    private final Token nullK = new Token(TipoToken.NULL, "null");
-    private final Token thisK = new Token(TipoToken.THIS, "this");
-    private final Token orK = new Token(TipoToken.OR, "or");
-    private final Token andK = new Token(TipoToken.AND, "and");
-    private final Token superk = new Token(TipoToken.SUPER, "super");
-    private final Token numberK = new Token(TipoToken.NUMERO, "");
-    private final Token cadenaK = new Token(TipoToken.CADENA, "");
-    // Identificadores
-    private final Token id = new Token(TipoToken.IDENTIFICADOR, "");
-
-    // Símbolos
-
-    private final Token puntoycoma = new Token(TipoToken.PUNTO_Y_COMA, ";");
-    private final Token parentesisIzq = new Token(TipoToken.PARENTESIS_IZQ, "(");
-    private final Token parentesisDer = new Token(TipoToken.PARENTESIS_DER, ")");
-    private final Token llaveIzq = new Token(TipoToken.LLAVE_IZQ, "{");
-    private final Token llaveDer = new Token(TipoToken.LLAVE_DER, "}");
-    private final Token punto = new Token(TipoToken.PUNTO, ".");
+    
+    private final Token y = new Token(TipoToken.Y, "y");
+    private final Token clase = new Token(TipoToken.CLASE, "clase");
+    private final Token ademas = new Token(TipoToken.ADEMAS, "ademas");
+    private final Token para = new Token(TipoToken.PARA, "para");
+    private final Token funcion = new Token(TipoToken.FUNCION, "funcion");
+    private final Token si = new Token(TipoToken.SI, "si");
+    private final Token nulo = new Token(TipoToken.NULO, "nulo");
+    private final Token imprimir = new Token(TipoToken.IMPRIMIR, "imprimir");
+    private final Token devolver = new Token(TipoToken.DEVOLVER, "devolver");
+    private final Token supr = new Token(TipoToken.SUPER, "super");
+    private final Token este = new Token(TipoToken.ESTE, "este");
+    private final Token verdadero = new Token(TipoToken.VERDADERO, "verdadero");
+    private final Token falso = new Token(TipoToken.FALSO, "falso");
+    private final Token mientras = new Token(TipoToken.MIENTRAS, "mientras");
+    private final Token variable = new Token(TipoToken.VARIABLE, "variable");
+    private final Token o = new Token(TipoToken.O, "o");
+    private final Token no = new Token(TipoToken.NO, "!");
+    private final Token igual = new Token(TipoToken.IGUAL, "==");
+    private final Token diferente_de = new Token(TipoToken.DIFERENTE, "!=");
+    private final Token asignar = new Token(TipoToken.ASIGNAR, "=");
+    private final Token menor = new Token(TipoToken.MENOR_QUE, "<");
+    private final Token menor_igual = new Token(TipoToken.MENOR_IGUAL, "<=");
+    private final Token mayor = new Token(TipoToken.MAYOR_QUE, ">");
+    private final Token mayor_igual = new Token(TipoToken.MAYOR_IGUAL, ">=");
+    private final Token numero = new Token(TipoToken.NUMERO, "numero");
+    private final Token cadena = new Token(TipoToken.CADENA, "cadena");
+    private final Token identificador = new Token(TipoToken.IDENTIFICADOR, "identificador");
     private final Token coma = new Token(TipoToken.COMA, ",");
-    private final Token igual = new Token(TipoToken.IGUAL, "=");
-    private final Token diferente = new Token(TipoToken.DIFERENTE, "!=");
-    private final Token igualIgual = new Token(TipoToken.IGUAL_IGUAL, "==");
-    private final Token mayorQue = new Token(TipoToken.MAYOR_QUE, ">");
-    private final Token mayorOigual = new Token(TipoToken.MAYOR_IGUAL, ">=");
-    private final Token menorQue = new Token(TipoToken.MENOR_QUE, "<");
-    private final Token menorOigual = new Token(TipoToken.MENOR_IGUAL, "<=");
     private final Token suma = new Token(TipoToken.SUMA, "+");
-    private final Token menos = new Token(TipoToken.RESTA, "-");
+    private final Token resta = new Token(TipoToken.RESTA, "-");
     private final Token multiplicacion = new Token(TipoToken.MULTIPLICACION, "*");
     private final Token division = new Token(TipoToken.DIVISION, "/");
-    private final Token not = new Token(TipoToken.NOT, "!");
-
+    private final Token parentesis_izq = new Token(TipoToken.PARENTESIS_IZQ, "(");
+    private final Token parentesis_der = new Token(TipoToken.PARENTESIS_DER, ")");
+    private final Token llave_izq = new Token(TipoToken.LLAVE_IZQ, "{");
+    private final Token llave_der = new Token(TipoToken.LLAVE_DER, "}");
+    private final Token punto = new Token(TipoToken.PUNTO, ".");
+    private final Token punto_y_coma = new Token(TipoToken.PUNTO_Y_COMA, ";");
     private final Token finCadena = new Token(TipoToken.EOF, "");
 
     private int i = 0;
@@ -56,657 +52,732 @@ public class Parser {
 
     private Token preanalisis;
 
-    public Parser(List<Token> tokens) {
+    public Parser(List<Token> tokens){
         this.tokens = tokens;
     }
 
-    public boolean parse() {
+    public boolean parse(){
+
         i = 0;
         preanalisis = tokens.get(i);
-        declaracion();
-
-        if (!hayErrores && !preanalisis.equals(finCadena)) {
-            System.out.println(
-                    "Error: No se esperaba el token " + preanalisis.tipo);
+        PROGRAM();
+        if(!hayErrores && !preanalisis.equals(finCadena)){
             return false;
-        } else if (!hayErrores && preanalisis.equals(finCadena)) {
+        }
+        else if(!hayErrores && preanalisis.equals(finCadena)){
             //System.out.println("Consulta válida");
             return true;
         }
-        return hayErrores;
+
+        /*if(!preanalisis.equals(finCadena)){
+            System.out.println("Error en la posición " + preanalisis.posicion + ". No se esperaba el token " + preanalisis.tipo);
+        }else if(!hayErrores){
+            System.out.println("Consulta válida");
+        }*/
+        return !hayErrores;
     }
 
-    // DECLARACIONES
-    void declaracion() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(classK)) {
-            class_decl();
-            declaracion();
-        } else if (preanalisis.equals(funK)) {
-            fun_decl();
-            declaracion();
-        } else if (preanalisis.equals(varK)) {
-            var_decl();
-            declaracion();
+    void PROGRAM(){
+        DECLARATION();
+       }
 
-        } else if (preanalisis.equals(diferente)
-                || preanalisis.equals(menos)
-                || preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)
-                || preanalisis.equals(forK)
-                || preanalisis.equals(ifK)
-                || preanalisis.equals(printK)
-                || preanalisis.equals(returnK)
-                || preanalisis.equals(whileK)
-                || preanalisis.equals(llaveIzq)) {
-            state_decl();
-            declaracion();
+    void DECLARATION()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(clase))
+        {
+            CLASS_DECL();
+            DECLARATION();
+        }
+        else if(preanalisis.equals(funcion))
+        {
+            FUN_DECL();
+            DECLARATION();
+        }
+        else if(preanalisis.equals(variable))
+        {
+            VAR_DECL();
+            DECLARATION();
+        }
+        else if(preanalisis.equals(diferente_de) || preanalisis.equals(menor) || preanalisis.equals(verdadero) || preanalisis.equals(falso) ||
+                preanalisis.equals(nulo) ||preanalisis.equals(este) ||preanalisis.equals(numero) ||preanalisis.equals(cadena) ||preanalisis.equals(identificador) ||
+                preanalisis.equals(parentesis_izq) ||preanalisis.equals(supr) ||preanalisis.equals(para) || preanalisis.equals(si) ||
+                preanalisis.equals(imprimir) || preanalisis.equals(devolver) || preanalisis.equals(mientras) || preanalisis.equals(llave_izq))
+        {
+            STATEMENT();
+            DECLARATION();
         }
     }
 
-    void class_decl() {
-        if (hayErrores)
-            return;
-        match(classK);
-        match(id);
-        class_inher();
-        match(llaveIzq);
-        function();
-        match(llaveDer);
+    void CLASS_DECL()
+    {
+        if(hayErrores) return;
 
+        match(clase);
+        match(identificador);
+        CLASS_INHER();
+        match(llave_izq);
+        FUNCTIONS();
+        match(llave_der);
     }
 
-    void class_inher() {
-        if (preanalisis.equals(menorQue)) {
-            match(menorQue);
-            match(id);
+    void CLASS_INHER()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(menor))
+        {
+            match(menor);
+            match(identificador);
         }
     }
 
-    void fun_decl() {
-        if (hayErrores)
-            return;
-        match(funK);
-        function();
+    void FUN_DECL()
+    {
+        if(hayErrores) return;
+
+        match(funcion);
+        FUNCTION();
     }
 
-    void var_decl() {
-        match(varK);
-        match(id);
-        var_init();
-        match(puntoycoma);
+    void VAR_DECL()
+    {
+        if(hayErrores) return;
+
+        match(variable);
+        match(identificador);
+        VAR_INIT();
+        match(punto_y_coma);
     }
 
-    void var_init() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(igual)) {
-            match(igual);
-            expression();
+    void VAR_INIT()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(asignar))
+        {
+            match(asignar);
+            EXPRESSION();
         }
     }
 
-    void state_decl() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(ifK)) {
-            if_stmt();
-        } else if (preanalisis.equals(forK)) {
-            for_stmt();
-        } else if (preanalisis.equals(whileK)) {
-            while_stmt();
-        } else if (preanalisis.equals(printK)) {
-            print_stmt();
-        } else if (preanalisis.equals(returnK)) {
-            return_stmt();
-        } else if (preanalisis.equals(llaveIzq)) {
-            block();
-        } else if (preanalisis.equals(diferente)
-                || preanalisis.equals(menos)
-                || preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)) {
-            expr_stmt();
+    void STATEMENT()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(diferente_de) || preanalisis.equals(menor) || preanalisis.equals(verdadero) || preanalisis.equals(falso) ||
+                preanalisis.equals(nulo) || preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) ||
+                preanalisis.equals(identificador) || preanalisis.equals(parentesis_izq) || preanalisis.equals(supr))
+        {
+            EXPR_STMT();
         }
-    }
-
-    void expr_stmt() {
-        if (hayErrores)
-            return;
-        expression();
-        match(puntoycoma);
-
-    }
-
-    void for_stmt() {
-        if (hayErrores)
-            return;
-        match(forK);
-        match(parentesisIzq);
-        for_stms1();
-        for_stms2();
-        for_stms3();
-        match(parentesisDer);
-        state_decl();
-    }
-
-    void for_stms1() {
-        if (hayErrores)
-            return;
-
-        if (preanalisis.equals(varK)) {
-            var_decl();
-        } else if (preanalisis.equals(diferente)
-                || preanalisis.equals(menos)
-                || preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)) {
-            expr_stmt();
-        } else if (preanalisis.equals(puntoycoma)) {
-            match(puntoycoma);
-        } else {
+        else if(preanalisis.equals(para))
+        {
+            FOR_STMT();
+        }
+        else if(preanalisis.equals(si))
+        {
+            IF_STMT();
+        }
+        else if(preanalisis.equals(imprimir))
+        {
+            PRINT_STMT();
+        }
+        else if(preanalisis.equals(devolver))
+        {
+            RETURN_STMT();
+        }
+        else if(preanalisis.equals(mientras))
+        {
+            WHILE_STMT();
+        }
+        else if(preanalisis.equals(llave_izq))
+        {
+            BLOCK();
+        }
+        else
+        {
             hayErrores = true;
-            System.out.println("Error: No se esperaba -> " + preanalisis.tipo);
+            //System.out.println("Error en la posición " + preanalisis.posicion);
+            System.out.println("Error sintactico");
+            System.exit(1);
         }
     }
 
-    void for_stms2() {
-        if (hayErrores)
-            return;
+    void EXPR_STMT()
+    {
+        if(hayErrores) return;
 
-        if (preanalisis.equals(diferente)
-                || preanalisis.equals(menos)
-                || preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)) {
-            expression();
-            match(puntoycoma);
-        } else if (preanalisis.equals(puntoycoma)) {
-            match(puntoycoma);
-        } else {
+        EXPRESSION();
+        match(punto_y_coma);
+    }
+
+    void FOR_STMT()
+    {
+        if(hayErrores) return;
+
+        match(para);
+        match(parentesis_izq);
+        FOR_STMT_1();
+        FOR_STMT_2();
+        FOR_STMT_3();
+        match(parentesis_der);
+        STATEMENT();
+    }
+
+    void FOR_STMT_1()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(variable))
+        {
+            VAR_DECL();
+        }
+        else if(preanalisis.equals(diferente_de) || preanalisis.equals(menor) || preanalisis.equals(verdadero) || preanalisis.equals(falso) ||
+                preanalisis.equals(nulo) || preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) ||
+                preanalisis.equals(identificador) || preanalisis.equals(parentesis_izq) || preanalisis.equals(supr))
+        {
+            EXPR_STMT();
+        }
+        else if(preanalisis.equals(punto_y_coma))
+        {
+            match(punto_y_coma);
+        }
+        else
+        {
             hayErrores = true;
-             System.out.println("Error: No se esperaba -> " + preanalisis.tipo);
+            //System.out.println("Error en la posición " + preanalisis.posicion);
+            System.out.println("Error sintactico");
+            System.exit(1);
         }
     }
 
-    void for_stms3() {
-        if (hayErrores)
-            return;
+    void FOR_STMT_2()
+    {
+        if(hayErrores) return;
 
-        if (preanalisis.equals(diferente)
-                || preanalisis.equals(menos)
-                || preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)) {
-            expression();
+        if(preanalisis.equals(diferente_de) || preanalisis.equals(menor) || preanalisis.equals(verdadero) || preanalisis.equals(falso) ||
+                preanalisis.equals(nulo) || preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) ||
+                preanalisis.equals(identificador) || preanalisis.equals(parentesis_izq) || preanalisis.equals(supr))
+        {
+            EXPRESSION();
+            match(punto_y_coma);
+        }
+        else if(preanalisis.equals(punto_y_coma))
+        {
+            match(punto_y_coma);
+        }
+        else
+        {
+            hayErrores = true;
+            //System.out.println("Error en la posición " + preanalisis.posicion);
+            System.out.println("Error sintactico");
+            System.exit(1);
         }
     }
 
-    void if_stmt() {
-        if (hayErrores)
-            return;
-        match(ifK);
-        match(parentesisIzq);
-        expression();
-        match(parentesisDer);
-        state_decl();
-        else_state();
-    }
+    void FOR_STMT_3()
+    {
+        if(hayErrores) return;
 
-    void else_state() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(elseK)) {
-            match(elseK);
-            state_decl();
+        if(preanalisis.equals(diferente_de) || preanalisis.equals(menor) || preanalisis.equals(verdadero) || preanalisis.equals(falso) ||
+                preanalisis.equals(nulo) || preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) ||
+                preanalisis.equals(identificador) || preanalisis.equals(parentesis_izq) || preanalisis.equals(supr))
+        {
+            EXPRESSION();
         }
     }
 
-    void print_stmt() {
-        if (hayErrores)
-            return;
-        match(printK);
-        expression();
-        match(puntoycoma);
+    void IF_STMT()
+    {
+        if(hayErrores) return;
+
+        match(si);
+        match(parentesis_izq);
+        EXPRESSION();
+        match(parentesis_der);
+        STATEMENT();
+        ELSE_STATEMENT();
     }
 
-    void return_stmt() {
-        if (hayErrores)
-            return;
-        match(returnK);
-        return_exp_opc();
-        match(puntoycoma);
-    }
+    void ELSE_STATEMENT()
+    {
+        if(hayErrores) return;
 
-    void return_exp_opc() {
-        if (hayErrores)
-            return;
-
-        if (preanalisis.equals(diferente)
-                || preanalisis.equals(menos)
-                || preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)) {
-            expression();
+        if(preanalisis.equals(ademas))
+        {
+            match(ademas);
+            STATEMENT();
         }
     }
 
-    void while_stmt() {
-        match(whileK);
-        match(parentesisIzq);
-        expression();
-        match(parentesisDer);
-        state_decl();
+    void PRINT_STMT()
+    {
+        if(hayErrores) return;
+
+        match(imprimir);
+        EXPRESSION();
+        match(punto_y_coma);
     }
 
-    void block() {
-        if (hayErrores)
-            return;
-        match(llaveIzq);
-        block_decl();
-        match(llaveDer);
+    void RETURN_STMT()
+    {
+        if(hayErrores) return;
+
+        match(devolver);
+        RETURN_EXP_OPC();
+        match(punto_y_coma);
     }
 
-    void block_decl() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(classK)
-                || preanalisis.equals(funK)
-                || preanalisis.equals(varK)
-                || preanalisis.equals(diferente)
-                || preanalisis.equals(menos)
-                || preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)
-                || preanalisis.equals(forK)
-                || preanalisis.equals(ifK)
-                || preanalisis.equals(printK)
-                || preanalisis.equals(returnK)
-                || preanalisis.equals(whileK)
-                || preanalisis.equals(llaveIzq)) {
-            declaracion();
-            block_decl();
+    void RETURN_EXP_OPC()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(diferente_de) || preanalisis.equals(menor) || preanalisis.equals(verdadero) || preanalisis.equals(falso) ||
+                preanalisis.equals(nulo) || preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) ||
+                preanalisis.equals(identificador) || preanalisis.equals(parentesis_izq) || preanalisis.equals(supr))
+        {
+            EXPRESSION();
         }
     }
 
-    void expression() {
-        if (hayErrores)
-            return;
-        assignment();
+    void WHILE_STMT()
+    {
+        if(hayErrores) return;
+
+        match(mientras);
+        match(parentesis_izq);
+        EXPRESSION();
+        match(parentesis_der);
+        STATEMENT();
     }
 
-    void assignment() {
-        if (hayErrores)
-            return;
-        logic_or();
-        assignment_opc();
+    void BLOCK()
+    {
+        if(hayErrores) return;
+
+        match(llave_izq);
+        BLOCK_DECL();
+        match(llave_der);
     }
 
-    void assignment_opc() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(igual)) {
+    void BLOCK_DECL()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(clase) || preanalisis.equals(funcion) || preanalisis.equals(variable) || preanalisis.equals(diferente_de) || preanalisis.equals(menor) || preanalisis.equals(verdadero) ||preanalisis.equals(falso) || preanalisis.equals(nulo) ||
+                preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) || preanalisis.equals(identificador) ||
+                preanalisis.equals(parentesis_izq) || preanalisis.equals(supr) || preanalisis.equals(para) || preanalisis.equals(si) || preanalisis.equals(imprimir) ||
+                preanalisis.equals(devolver) || preanalisis.equals(mientras) || preanalisis.equals(llave_izq))
+        {
+            DECLARATION();
+            BLOCK_DECL();
+        }
+    }
+
+    void EXPRESSION()
+    {
+        if(hayErrores) return;
+
+        ASSIGNMENT();
+    }
+
+    void ASSIGNMENT()
+    {
+        if(hayErrores) return;
+
+        LOGIC_OR();
+        ASSIGNMENT_OPC();
+    }
+
+    void ASSIGNMENT_OPC()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(asignar))
+        {
+            match(asignar);
+            EXPRESSION();
+        }
+    }
+
+    void LOGIC_OR()
+    {
+        if(hayErrores) return;
+
+        LOGIC_AND();
+        LOGIC_OR_2();
+    }
+
+    void LOGIC_OR_2()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(o))
+        {
+            match(o);
+            LOGIC_AND();
+            LOGIC_OR_2();
+        }
+    }
+
+    void LOGIC_AND()
+    {
+        if(hayErrores) return;
+
+        EQUALITY();
+        LOGIC_AND_2();
+    }
+
+    void LOGIC_AND_2()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(y))
+        {
+            match(y);
+            EQUALITY();
+            LOGIC_AND_2();
+        }
+    }
+
+    void EQUALITY()
+    {
+        if(hayErrores) return;
+
+        COMPARISON();
+        EQUALITY_2();
+    }
+
+    void EQUALITY_2()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(diferente_de))
+        {
+            match(diferente_de);
+            COMPARISON();
+            EQUALITY_2();
+        }
+        else if(preanalisis.equals(igual))
+        {
             match(igual);
-            expression();
+            COMPARISON();
+            EQUALITY_2();
         }
     }
 
-    void logic_or() {
-        if (hayErrores)
-            return;
-        logic_and();
-        logic_or_2();
+    void COMPARISON()
+    {
+        if(hayErrores) return;
+
+        TERM();
+        COMPARISON_2();
     }
 
-    void logic_or_2() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(orK)) {
-            match(orK);
-            logic_and();
-            logic_or_2();
+    void COMPARISON_2()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(mayor))
+        {
+            match(mayor);
+            TERM();
+            COMPARISON_2();
+        }
+        else if(preanalisis.equals(mayor_igual))
+        {
+            match(mayor_igual);
+            TERM();
+            COMPARISON_2();
+        }
+        else if(preanalisis.equals(menor))
+        {
+            match(menor);
+            TERM();
+            COMPARISON_2();
+        }
+        else if(preanalisis.equals(menor_igual))
+        {
+            match(menor_igual);
+            TERM();
+            COMPARISON_2();
         }
     }
 
-    void logic_and() {
-        if (hayErrores)
-            return;
-        equality();
-        logic_and_2();
+    void TERM()
+    {
+        if(hayErrores) return;
+
+        FACTOR();
+        TERM_2();
     }
 
-    void logic_and_2() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(andK)) {
-            match(andK);
-            equality();
-            logic_and_2();
+    void TERM_2()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(menor))
+        {
+            match(menor);
+            FACTOR();
+            TERM_2();
         }
-    }
-
-    void equality() {
-        if (hayErrores)
-            return;
-        comparison();
-        equality_2();
-    }
-
-    void equality_2() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(igualIgual)) {
-            match(igualIgual);
-            comparison();
-            equality_2();
-        } else if (preanalisis.equals(diferente)) {
-            match(diferente);
-            comparison();
-            equality_2();
-        }
-    }
-
-    void comparison() {
-        if (hayErrores)
-            return;
-        term();
-        comparison_2();
-    }
-
-    void comparison_2() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(mayorQue)) {
-            match(mayorQue);
-            term();
-            comparison_2();
-        } else if (preanalisis.equals(mayorOigual)) {
-            match(mayorOigual);
-            term();
-            comparison_2();
-        } else if (preanalisis.equals(menorQue)) {
-            match(menorQue);
-            term();
-            comparison_2();
-        } else if (preanalisis.equals(menorOigual)) {
-            match(menorOigual);
-            term();
-            comparison_2();
-        }
-    }
-
-    void term() {
-        if (hayErrores)
-            return;
-        factor();
-        term_2();
-    }
-
-    void term_2() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(menos)) {
-            match(menos);
-            factor();
-            term_2();
-        } else if (preanalisis.equals(suma)) {
+        else if(preanalisis.equals(suma))
+        {
             match(suma);
-            factor();
-            term_2();
+            FACTOR();
+            TERM_2();
         }
     }
 
-    void factor() {
-        if (hayErrores)
-            return;
-        unary();
-        factor_2();
+    void FACTOR()
+    {
+        if(hayErrores) return;
+
+        UNARY();
+        FACTOR_2();
     }
 
-    void factor_2() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(division)) {
+    void FACTOR_2()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(division))
+        {
             match(division);
-            unary();
-            factor_2();
-        } else if (preanalisis.equals(multiplicacion)) {
+            UNARY();
+            FACTOR_2();
+        }
+
+        else if(preanalisis.equals(multiplicacion))
+        {
             match(multiplicacion);
-            unary();
-            factor_2();
+            UNARY();
+            FACTOR_2();
         }
     }
 
-    void unary() {
-        if (preanalisis.equals(not)) {
-            match(not);
-            unary();
-        } else if (preanalisis.equals(menos)) {
-            match(menos);
-            unary();
-        } else if (preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)) {
-            call();
-        } else {
+    void UNARY()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(diferente_de))
+        {
+            match(diferente_de);
+            UNARY();
+        }
+
+        else if(preanalisis.equals(menor))
+        {
+            match(menor);
+            UNARY();
+        }
+
+        else if(preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo) ||
+                preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) || preanalisis.equals(identificador) ||
+                preanalisis.equals(parentesis_izq) || preanalisis.equals(supr))
+        {
+            CALL();
+        }
+        else
+        {
             hayErrores = true;
-             System.out.println("Error: No se esperaba -> " + preanalisis.tipo);
+            //System.out.println("Error en la posición " + preanalisis.posicion);
+            System.out.println("Error sintactico");
+            System.exit(1);
         }
     }
 
-    void call() {
-        if (hayErrores)
-            return;
-        primary();
-        call_2();
+    void CALL()
+    {
+        if(hayErrores) return;
+
+        PRIMARY();
+        CALL_2();
     }
 
-    void call_2() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(parentesisIzq)) {
-            match(parentesisIzq);
-            argumentsOpc();
-            match(parentesisDer);
-            call_2();
-        } else if (preanalisis.equals(punto)) {
+    void CALL_2()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(parentesis_izq))
+        {
+            match(parentesis_izq);
+            ARGUMENTS_OPC();
+            match(parentesis_der);
+            CALL_2();
+        }
+        else if(preanalisis.equals(punto))
+        {
             match(punto);
-            match(id);
-            call_2();
+            match(identificador);
+            CALL_2();
         }
     }
 
-    void call_opc() {
-        if (hayErrores)
-            return;
+    void CALL_OPC()
+    {
+        if(hayErrores) return;
 
-        if (preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)) {
-            call();
+        if(preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo) ||
+                preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) || preanalisis.equals(identificador) ||
+                preanalisis.equals(parentesis_izq) || preanalisis.equals(supr))
+        {
+            CALL();
             match(punto);
         }
     }
 
-    void primary() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(trueK)) {
-            match(trueK);
-        } else if (preanalisis.equals(falseK)) {
-            match(falseK);
-        } else if (preanalisis.equals(nullK)) {
-            match(nullK);
-        } else if (preanalisis.equals(thisK)) {
-            match(thisK);
-        } else if (preanalisis.equals(numberK)) {
-            match(numberK);
-        } else if (preanalisis.equals(cadenaK)) {
-            match(cadenaK);
+    void PRIMARY()
+    {
+        if(hayErrores) return;
 
-        } else if (preanalisis.equals(id)) {
-            match(id);
-        } else if (preanalisis.equals(parentesisIzq)) {
-            match(parentesisIzq);
-            expression();
-            match(parentesisDer);
-        } else if (preanalisis.equals(superk)) {
-            match(superk);
+        if(preanalisis.equals(verdadero))
+        {
+            match(verdadero);
+        }
+        else if(preanalisis.equals(falso))
+        {
+            match(falso);
+        }
+        else if(preanalisis.equals(nulo))
+        {
+            match(nulo);
+        }
+        else if(preanalisis.equals(este))
+        {
+            match(este);
+        }
+        else if(preanalisis.equals(numero))
+        {
+            match(numero);
+        }
+        else if(preanalisis.equals(cadena))
+        {
+            match(cadena);
+        }
+        else if(preanalisis.equals(identificador))
+        {
+            match(identificador);
+        }
+        else if(preanalisis.equals(parentesis_izq))
+        {
+            match(parentesis_izq);
+            EXPRESSION();
+            match(parentesis_der);
+        }
+        else if(preanalisis.equals(supr))
+        {
+            match(supr);
             match(punto);
-            match(id);
-        } else {
+            match(identificador);
+        }
+        else
+        {
             hayErrores = true;
-            System.out.println("Error: No se esperaba -> " + preanalisis.tipo);
-    }
-}
-
-    void function() {
-        if (hayErrores)
-            return;
-        match(id);
-        match(parentesisIzq);
-        parameter_opc();
-        match(parentesisDer);
-        block();
-    }
-
-    void functions() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(id)) {
-            function();
-            functions();
+            //System.out.println("Error en la posición " + preanalisis.posicion);
+            System.out.println("Error sintactico");
+            System.exit(1);
         }
     }
 
-    void parameter_opc() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(id)) {
-            parameter();
+    void FUNCTION()
+    {
+        if(hayErrores) return;
 
+        match(identificador);
+        match(parentesis_izq);
+        PARAMETERS_OPC();
+        match(parentesis_der);
+        BLOCK();
+    }
+
+    void FUNCTIONS()
+    {
+        if (hayErrores) return;
+
+        if(preanalisis.equals(identificador))
+        {
+            FUNCTION();
+            FUNCTIONS();
         }
     }
 
-    void parameter() {
-        if (hayErrores)
-            return;
-        match(id);
-        parameter_2();
+    void PARAMETERS_OPC()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(identificador))
+        {
+            PARAMETERS();
+        }
     }
 
-    void parameter_2() {
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(coma)) {
+    void PARAMETERS()
+    {
+        if(hayErrores) return;
+
+        match(identificador);
+        PARAMETERS_2();
+    }
+
+    void PARAMETERS_2()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(coma))
+        {
             match(coma);
-            match(id);
-            parameter_2();
+            match(identificador);
+            PARAMETERS_2();
         }
     }
 
-    void argumentsOpc() {
-        if (preanalisis.equals(diferente)
-                || preanalisis.equals(menos)
-                || preanalisis.equals(trueK)
-                || preanalisis.equals(falseK)
-                || preanalisis.equals(nullK)
-                || preanalisis.equals(thisK)
-                || preanalisis.equals(numberK)
-                || preanalisis.equals(cadenaK)
-                || preanalisis.equals(id)
-                || preanalisis.equals(parentesisIzq)
-                || preanalisis.equals(superk)) {
-            arguments();
+    void ARGUMENTS_OPC()
+    {
+        if(hayErrores) return;
+
+        if(preanalisis.equals(diferente_de) || preanalisis.equals(menor) || preanalisis.equals(verdadero) || preanalisis.equals(falso) || preanalisis.equals(nulo) ||
+                preanalisis.equals(este) || preanalisis.equals(numero) || preanalisis.equals(cadena) || preanalisis.equals(identificador) ||
+                preanalisis.equals(parentesis_izq) || preanalisis.equals(supr))
+        {
+            ARGUMENTS();
         }
     }
 
-    void arguments() {
+    void ARGUMENTS()
+    {
+        if(hayErrores) return;
 
-        if (hayErrores)
-            return;
-        expression();
-        arguments2();
+        EXPRESSION();
+        ARGUMENTS_2();
     }
 
-    void arguments2() {
+    void ARGUMENTS_2()
+    {
+        if(hayErrores) return;
 
-        if (hayErrores)
-            return;
-        if (preanalisis.equals(coma)) {
+        if(preanalisis.equals(coma))
+        {
             match(coma);
-            expression();
-            arguments2();
+            EXPRESSION();
+            ARGUMENTS_2();
         }
     }
 
-    void match(Token t) {
 
-        if (hayErrores)
-            return;
+    void match(Token t){
+        if(hayErrores) return;
 
-        if (preanalisis.tipo == t.tipo) {
+        if(preanalisis.tipo == t.tipo){
             i++;
             preanalisis = tokens.get(i);
-        } else {
+        }
+        else{
             hayErrores = true;
-            System.out.println("Error: Se esperaba un " + t.tipo);
+
         }
     }
 

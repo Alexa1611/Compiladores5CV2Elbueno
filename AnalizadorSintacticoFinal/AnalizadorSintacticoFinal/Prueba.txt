@@ -1,5 +1,7 @@
-// Prueba 1:
-var nombre = "Gabriel";
-var apellido = "Rodriguez";
+//Prueba 1:
+variable nombre = "Gabriel";
+variable apellido = "Rodriguez";
 
-print nombre + " " + apellido;
+imprimir nombre + " " + apellido;
+
+

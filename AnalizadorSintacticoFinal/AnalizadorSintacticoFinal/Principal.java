@@ -1,5 +1,5 @@
-package AnalizadorSintacticoFinal;
 
+package AnalizadorSintacticoFinal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,17 +13,17 @@ public class Principal {
     static boolean existenErrores = false;
 
     public static void main(String[] args) throws IOException {
-
-        if (args.length > 1) {
+        if(args.length > 1) {
             System.out.println("Uso correcto: interprete [script]");
 
-            // Convención definida en el archivo "system.h" de UNIX
+            // Convención defininida en el archivo "system.h" de UNIX
             System.exit(64);
-        } else if (args.length == 1) {
+        } else if(args.length == 1){
             ejecutarArchivo(args[0]);
-        } else {
+        } else{
             ejecutarPrompt();
         }
+        ejecutarPrompt();
     }
 
     private static void ejecutarArchivo(String path) throws IOException {
@@ -31,34 +31,44 @@ public class Principal {
         ejecutar(new String(bytes, Charset.defaultCharset()));
 
         // Se indica que existe un error
-        if (existenErrores)
-            System.exit(65);
+        if(existenErrores) System.exit(65);
     }
 
-    private static void ejecutarPrompt() throws IOException {
+    private static void ejecutarPrompt() throws IOException{
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
-        for (;;) {
+        for(;;){
             System.out.print(">>> ");
             String linea = reader.readLine();
-            if (linea == null)
-                break; // Presionar Ctrl + D
+            if(linea == null) break; // Presionar Ctrl + D
             ejecutar(linea);
             existenErrores = false;
         }
     }
 
-    private static void ejecutar(String source) {
+    private static void ejecutar(String source){
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
-        Parser parser = new Parser(tokens);
-        boolean pars = parser.parse();
 
-        new TablaDeSimbolos();
-        if (pars) {
+        /*for(Token token : tokens){
+            System.out.println(token);
+        }*/
+
+        // Para este ejemplo no vamos a utilizar un parser
+        Parser parser = new Parser(tokens);
+        boolean psr = parser.parse();
+new TablaDeSimbolos();
+
+        //boolean psr = parser.parse();
+        if (psr == true)
+        {
             GeneradorPostfija gpf = new GeneradorPostfija(tokens);
             List<Token> postfija = gpf.convertir();
+
+        /*for(Token token : postfija){
+            System.out.println(token);
+        }*/
 
             GeneradorAST gast = new GeneradorAST(postfija);
             Arbol programa = gast.generarAST();
@@ -67,16 +77,19 @@ public class Principal {
     }
 
     /*
-     * El método error se puede usar desde las distintas clases
-     * para reportar los errores:
-     * Interprete.error(....);
+    El método error se puede usar desde las distintas clases
+    para reportar los errores:
+    Interprete.error(....);
      */
-    static void error(int linea, String mensaje) {
+    static void error(int linea, String mensaje){
         reportar(linea, "", mensaje);
     }
 
-    private static void reportar(int linea, String donde, String mensaje) {
-        System.err.println("[linea " + linea + "] Error " + donde + ": " + mensaje);
+    private static void reportar(int linea, String donde, String mensaje){
+        System.err.println(
+                "[linea " + linea + "] Error " + donde + ": " + mensaje
+        );
         existenErrores = true;
     }
+
 }

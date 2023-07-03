@@ -1,11 +1,10 @@
-//Prueba 10
-var max=10;
+variable max=10;
 
-for(var i=0; i<10; i=i+1){
-    if(i<5){
-        print "menor a 5";
+para(variable i=0; i<10; i=i+1){
+    si(i<5){
+        imprimir "menor a 5";
     }
-    else{
-        print "mayor o igual a 5";
+    ademas{
+        imprimir "mayor o igual a 5";
     }
 }
